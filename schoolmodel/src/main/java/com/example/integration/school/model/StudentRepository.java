@@ -1,4 +1,4 @@
-package com.example.integration.predictabowl.schoolmodel;
+package com.example.integration.school.model;
 
 import java.util.List;
 

@@ -1,6 +1,8 @@
-package com.example.integration.predictabowl.schoolmodel;
+package com.example.integration.school.view;
 
 import java.util.List;
+
+import com.example.integration.school.model.Student;
 
 public interface StudentView {
 	void showAllStudents(List <Student> students);

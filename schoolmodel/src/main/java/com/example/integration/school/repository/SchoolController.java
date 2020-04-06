@@ -1,4 +1,8 @@
-package com.example.integration.predictabowl.schoolmodel;
+package com.example.integration.school.repository;
+
+import com.example.integration.school.model.Student;
+import com.example.integration.school.model.StudentRepository;
+import com.example.integration.school.view.StudentView;
 
 public class SchoolController {
 

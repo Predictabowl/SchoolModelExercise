@@ -1,10 +1,15 @@
-package com.example.integration.predictabowl.schoolmodel;
+package com.example.integration.school.model;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import com.example.integration.school.model.Student;
+import com.example.integration.school.model.StudentRepository;
+import com.example.integration.school.repository.SchoolController;
+import com.example.integration.school.view.StudentView;
 
 import static org.mockito.Mockito.*;
 
