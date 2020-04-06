@@ -33,10 +33,10 @@ import com.mongodb.client.MongoDatabase;
 
 public class StudentMongoRepositoryTestcontainersIT {
 
-	@SuppressWarnings("rawtypes")
+//	@SuppressWarnings("rawtypes")
 
-	@ClassRule
-	public static final GenericContainer mongo = new GenericContainer("mongo:4.2.3").withExposedPorts(27017);
+//	@ClassRule
+//	public static final GenericContainer mongo = new GenericContainer("mongo:4.2.3").withExposedPorts(27017);
 
 	private MongoClient client;
 	private StudentRepository studentRepository;
@@ -44,9 +44,9 @@ public class StudentMongoRepositoryTestcontainersIT {
 
 	@Before
 	public void setup() {
-		client = new MongoClient(new ServerAddress(mongo.getContainerIpAddress(), mongo.getMappedPort(27017)));
+//		client = new MongoClient(new ServerAddress(mongo.getContainerIpAddress(), mongo.getMappedPort(27017)));
 		// The following line is used only when a container with mongoDB is running in the background
-//		client = new MongoClient(new ServerAddress("localhost", 27017));
+		client = new MongoClient(new ServerAddress("localhost", 27017));
 		studentRepository = new StudentMongoRepository(client);
 		MongoDatabase database = client.getDatabase(SCHOOL_DB_NAME);
 		// we make sure the database is cleaned at the start of every test method
