@@ -1,6 +1,8 @@
-package com.example.integration.school.model;
+package com.example.integration.school.repository;
 
 import java.util.List;
+
+import com.example.integration.school.model.Student;
 
 public interface StudentRepository {
 	public List<Student> findAll();

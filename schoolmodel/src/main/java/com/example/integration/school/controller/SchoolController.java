@@ -1,7 +1,7 @@
-package com.example.integration.school.repository;
+package com.example.integration.school.controller;
 
 import com.example.integration.school.model.Student;
-import com.example.integration.school.model.StudentRepository;
+import com.example.integration.school.repository.StudentRepository;
 import com.example.integration.school.view.StudentView;
 
 public class SchoolController {

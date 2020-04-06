@@ -1,7 +1,9 @@
-package com.example.integration.school.model;
+package com.example.integration.school.repository;
 
 import java.util.List;
 import org.bson.*;
+
+import com.example.integration.school.model.Student;
 import com.mongodb.*;
 import com.mongodb.client.MongoCollection;
 
