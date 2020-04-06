@@ -37,14 +37,12 @@ public class StudentMongoRepository implements StudentRepository {
 
 	@Override
 	public void save(Student student) {
-		// TODO Auto-generated method stub
-
+		collection.insertOne(new Document().append("id", student.getId()).append("name", student.getName()));
 	}
 
 	@Override
 	public void delete(String id) {
-		// TODO Auto-generated method stub
-
+		collection.deleteOne(Filters.eq("id", id));
 	}
 
 	private Student from_Document_to_Student(Document d) {
