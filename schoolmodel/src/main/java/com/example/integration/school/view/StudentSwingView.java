@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import com.example.integration.school.controller.SchoolController;
 import com.example.integration.school.model.Student;
 
 import java.awt.GridBagLayout;
@@ -34,11 +35,12 @@ public class StudentSwingView extends JFrame implements StudentView{
 	private JLabel lblName;
 	private JTextField txtName;
 	private JButton btnAdd;
-	private JList listStudents;
+	private JList<Student> listStudents;
 	private DefaultListModel<Student> listStudentModel;
 	private JButton btnDeleteSelected;
-	private JLabel label;
+	private JLabel lblErrorMessage;
 	private JScrollPane scrollPane;
+	private SchoolController schoolController;
 
 	/**
 	 * Launch the application.
@@ -118,6 +120,7 @@ public class StudentSwingView extends JFrame implements StudentView{
 		txtName.setColumns(10);
 
 		btnAdd = new JButton("Add");
+		btnAdd.addActionListener(arg0 -> schoolController.newStudent(new Student(txtId.getText(), txtName.getText())));
 		btnAdd.setEnabled(false);
 		GridBagConstraints gbc_btnAdd = new GridBagConstraints();
 		gbc_btnAdd.gridwidth = 2;
@@ -143,6 +146,7 @@ public class StudentSwingView extends JFrame implements StudentView{
 		listStudents.setName("studentList");
 
 		btnDeleteSelected = new JButton("Delete Selected");
+		btnDeleteSelected.addActionListener(arg0 -> schoolController.deleteStudent(listStudents.getSelectedValue()));
 		btnDeleteSelected.setEnabled(false);
 		GridBagConstraints gbc_btnDeleteSelected = new GridBagConstraints();
 		gbc_btnDeleteSelected.insets = new Insets(0, 0, 5, 0);
@@ -151,12 +155,12 @@ public class StudentSwingView extends JFrame implements StudentView{
 		gbc_btnDeleteSelected.gridy = 4;
 		contentPane.add(btnDeleteSelected, gbc_btnDeleteSelected);
 
-		label = new JLabel(" ");
-		label.setName("errorMessageLabel");
-		GridBagConstraints gbc_label = new GridBagConstraints();
-		gbc_label.gridx = 1;
-		gbc_label.gridy = 5;
-		contentPane.add(label, gbc_label);
+		lblErrorMessage = new JLabel(" ");
+		lblErrorMessage.setName("errorMessageLabel");
+		GridBagConstraints gbc_lblErrorMessage = new GridBagConstraints();
+		gbc_lblErrorMessage.gridx = 1;
+		gbc_lblErrorMessage.gridy = 5;
+		contentPane.add(lblErrorMessage, gbc_lblErrorMessage);
 	}
 
 	DefaultListModel<Student> getListStudentModel() {
@@ -165,26 +169,31 @@ public class StudentSwingView extends JFrame implements StudentView{
 
 	@Override
 	public void showAllStudents(List<Student> students) {
-		// TODO Auto-generated method stub
-		
+		students.stream().forEach(listStudentModel::addElement);
 	}
 
 	@Override
 	public void showError(String message, Student student) {
-		// TODO Auto-generated method stub
-		
+		lblErrorMessage.setText(message+": "+student);
 	}
 
 	@Override
 	public void studentAdded(Student student) {
-		// TODO Auto-generated method stub
-		
+		listStudentModel.addElement(student);
+		clearErrorLabel();
 	}
 
 	@Override
 	public void studentRemove(Student student) {
-		// TODO Auto-generated method stub
-		
+		listStudentModel.removeElement(student);
+		clearErrorLabel();
 	}
 
+	private void clearErrorLabel() {
+		lblErrorMessage.setText(" ");
+	}
+
+	public void setSchoolController(SchoolController schoolController) {
+		this.schoolController = schoolController;
+	}
 }
