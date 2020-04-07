@@ -100,7 +100,7 @@ public class StudentMongoRepositoryTestcontainersIT {
 
 	private List<Student> readAllStudentsFromDatabase() {
 		return StreamSupport.stream(studentCollection.find().spliterator(), false)
-				.map(d -> new Student((String) d.get("id"), (String) d.get("name"))).collect(Collectors.toList());
+				.map(d -> new Student(d.get("id").toString(), d.get("name").toString())).collect(Collectors.toList());
 	}
 
 	private void addTestStudentToDatabase(String id, String name) {

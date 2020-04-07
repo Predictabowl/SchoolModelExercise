@@ -16,12 +16,7 @@ import com.example.integration.school.repository.StudentRepository;
 import com.example.integration.school.view.StudentView;
 import com.mongodb.MongoClient;
 
-/*
- * When we make integration tests we focus on a single class?
- * For example in this case we test the integration between the repository and the controller,
- * but the test case is focused exclusively on the controller, 
- */
-
+ 
 public class SchoolControllerIT {
 
 	@Mock

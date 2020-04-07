@@ -46,7 +46,7 @@ public class StudentMongoRepository implements StudentRepository {
 	}
 
 	private Student from_Document_to_Student(Document d) {
-		return new Student((String) d.get("id"), (String) d.getString("name"));
+		return new Student(d.get("id").toString(), d.getString("name").toString());
 	}
 
 }
