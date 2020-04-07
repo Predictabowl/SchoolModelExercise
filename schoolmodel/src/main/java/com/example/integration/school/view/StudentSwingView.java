@@ -5,19 +5,25 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import com.example.integration.school.model.Student;
+
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import javax.swing.JTextField;
 import java.awt.Insets;
+
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 import javax.swing.JScrollPane;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.List;
 
-public class StudentSwingView extends JFrame {
+public class StudentSwingView extends JFrame implements StudentView{
 
 	/**
 	 * 
@@ -28,7 +34,8 @@ public class StudentSwingView extends JFrame {
 	private JLabel lblName;
 	private JTextField txtName;
 	private JButton btnAdd;
-	private JList list;
+	private JList listStudents;
+	private DefaultListModel<Student> listStudentModel;
 	private JButton btnDeleteSelected;
 	private JLabel label;
 	private JScrollPane scrollPane;
@@ -128,10 +135,12 @@ public class StudentSwingView extends JFrame {
 		gbc_scrollPane.gridy = 3;
 		contentPane.add(scrollPane, gbc_scrollPane);
 
-		list = new JList();
-		scrollPane.setViewportView(list);
-		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		list.setName("studentList");
+		listStudentModel = new DefaultListModel<Student>();
+		listStudents = new JList<Student>(listStudentModel);
+		listStudents.addListSelectionListener(arg0 -> btnDeleteSelected.setEnabled(listStudents.getSelectedIndex() != -1));
+		scrollPane.setViewportView(listStudents);
+		listStudents.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		listStudents.setName("studentList");
 
 		btnDeleteSelected = new JButton("Delete Selected");
 		btnDeleteSelected.setEnabled(false);
@@ -148,6 +157,34 @@ public class StudentSwingView extends JFrame {
 		gbc_label.gridx = 1;
 		gbc_label.gridy = 5;
 		contentPane.add(label, gbc_label);
+	}
+
+	DefaultListModel<Student> getListStudentModel() {
+		return listStudentModel;
+	}
+
+	@Override
+	public void showAllStudents(List<Student> students) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void showError(String message, Student student) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void studentAdded(Student student) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void studentRemove(Student student) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
