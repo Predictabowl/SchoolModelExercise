@@ -15,4 +15,4 @@ cache:
     - $HOME/.m2
 
 script:
-    - mvn -f schoolmodel/pom.xml clean verify -Pjacoco,fatjar
+    - mvn -f schoolmodel/pom.xml clean verify -Pjacoco,fatjar coveralls:report
