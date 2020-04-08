@@ -1,14 +1,14 @@
 package com.example.integration.school.controller;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.*;
-
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.*;
 //import org.mockito.MockitoAnnotations;
+import static org.mockito.Mockito.verify;
 
 import java.util.Arrays;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import com.example.integration.school.model.Student;
 import com.example.integration.school.repository.StudentMongoRepository;

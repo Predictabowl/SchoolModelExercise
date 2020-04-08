@@ -1,20 +1,23 @@
 package com.example.integration.school.controller;
 
+import static java.util.Arrays.asList;
+import static org.mockito.Mockito.ignoreStubs;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
+
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import com.example.integration.school.controller.SchoolController;
 import com.example.integration.school.model.Student;
 import com.example.integration.school.repository.StudentRepository;
 import com.example.integration.school.view.StudentView;
-
-import static org.mockito.Mockito.*;
-
-import java.util.List;
-import static java.util.Arrays.asList;
 
 public class SchoolControllerTest {
 
