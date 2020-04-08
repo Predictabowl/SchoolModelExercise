@@ -120,7 +120,8 @@
 									<descriptorRef>jar-with-dependencies</descriptorRef>
 								</descriptorRefs>
 								<archive>
-								<!-- Temporary main class, should be changed once the actual main class is made -->
+									<!-- Temporary main class, should be changed once the actual main 
+										class is made -->
 									<manifest>
 										<mainClass>com.example.integration.school.view.StudentSwingView</mainClass>
 									</manifest>
@@ -152,6 +153,13 @@
 					<groupId>org.eluder.coveralls</groupId>
 					<artifactId>coveralls-maven-plugin</artifactId>
 					<version>4.3.0</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>report</goal>
+							</goals>
+						</execution>
+					</executions>
 				</plugin>
 			</plugins>
 		</pluginManagement>
