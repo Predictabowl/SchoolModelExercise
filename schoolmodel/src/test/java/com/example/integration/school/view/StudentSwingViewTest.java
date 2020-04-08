@@ -74,7 +74,7 @@ public class StudentSwingViewTest extends AssertJSwingJUnitTestCase {
 
 	@Test
 	@GUITest
-	public void test_when_either_ed_or_name_are_blank_then_Add_button_should_be_disabled() {
+	public void test_when_either_id_or_name_are_blank_then_Add_button_should_be_disabled() {
 		JTextComponentFixture idTextBox = window.textBox(ID_TEXT);
 		JTextComponentFixture nameTextBox = window.textBox(NAME_TEXT);
 
