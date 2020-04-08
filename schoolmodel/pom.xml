@@ -138,6 +138,7 @@
 						<!-- there's no main class yet, this is for posterity -->
 						<excludes>
 							<exclude>**/Main.*/</exclude>
+							<exclude>**/Student.*/</exclude>
 						</excludes>
 					</configuration>
 					<executions>
