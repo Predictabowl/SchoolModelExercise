@@ -27,6 +27,7 @@ import com.example.integration.school.model.Student;
 @RunWith(GUITestRunner.class)
 public class StudentSwingViewTest extends AssertJSwingJUnitTestCase {
 
+	private static final int TIMEOUT = 5000;
 	private StudentSwingView studentSwingView;
 	private FrameFixture window;
 	private SchoolController schoolController;
@@ -148,7 +149,7 @@ public class StudentSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.textBox(ID_TEXT).enterText("1");
 		window.textBox(NAME_TEXT).enterText("test");
 		window.button(JButtonMatcher.withText(ADD_BUTTON)).click();
-		verify(schoolController).newStudent(new Student("1", "test"));
+		verify(schoolController, timeout(TIMEOUT)).newStudent(new Student("1", "test"));
 	}
 
 	@Test
