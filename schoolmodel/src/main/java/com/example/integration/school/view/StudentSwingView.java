@@ -19,6 +19,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 import javax.swing.JScrollPane;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -42,7 +43,7 @@ public class StudentSwingView extends JFrame implements StudentView {
 	private JLabel lblErrorMessage;
 	private JScrollPane scrollPane;
 	private SchoolController schoolController;
-	
+
 	protected static final String ERROR_MESSAGE_LABEL = "errorMessageLabel";
 	protected static final String STUDENT_LIST = "studentList";
 	protected static final String NAME_TEXT = "nameTextBox";
@@ -204,24 +205,28 @@ public class StudentSwingView extends JFrame implements StudentView {
 
 	@Override
 	public void showAllStudents(List<Student> students) {
-		students.stream().forEach(listStudentModel::addElement);
+		SwingUtilities.invokeLater(() -> students.stream().forEach(listStudentModel::addElement));
 	}
 
 	@Override
 	public void showError(String message, Student student) {
-		lblErrorMessage.setText(message + ": " + student);
+		SwingUtilities.invokeLater(() -> lblErrorMessage.setText(message + ": " + student));
 	}
 
 	@Override
 	public void studentAdded(Student student) {
-		listStudentModel.addElement(student);
-		clearErrorLabel();
+		SwingUtilities.invokeLater(() -> {
+			listStudentModel.addElement(student);
+			clearErrorLabel();
+		});
 	}
 
 	@Override
 	public void studentRemove(Student student) {
-		listStudentModel.removeElement(student);
-		clearErrorLabel();
+		SwingUtilities.invokeLater(() -> {
+			listStudentModel.removeElement(student);
+			clearErrorLabel();
+		});
 	}
 
 	private void clearErrorLabel() {

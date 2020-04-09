@@ -104,7 +104,7 @@ public class StudentSwingViewTest extends AssertJSwingJUnitTestCase {
 	public void test_showAllStudents_should_add_student_descriptions_to_the_list() {
 		Student student1 = new Student("1", "test1");
 		Student student2 = new Student("2", "test2");
-		GuiActionRunner.execute(() -> studentSwingView.showAllStudents(Arrays.asList(student1, student2)));
+		studentSwingView.showAllStudents(Arrays.asList(student1, student2));
 		String[] listContents = window.list().contents(); // why here we don't need a name to find the list?
 		assertThat(listContents).containsExactly(student1.toString(), student2.toString());
 	}
@@ -113,14 +113,14 @@ public class StudentSwingViewTest extends AssertJSwingJUnitTestCase {
 	@GUITest
 	public void test_showError_should_show_the_message_in_the_error_label() {
 		Student student = new Student("1", "test");
-		GuiActionRunner.execute(() -> studentSwingView.showError("error message", student));
+		studentSwingView.showError("error message", student);
 		window.label(ERROR_MESSAGE_LABEL).requireText("error message: " + student);
 	}
 
 	@Test
 	@GUITest
 	public void test_studentAdded_should_add_the_student_to_the_list_and_clear_the_error() {
-		GuiActionRunner.execute(() -> studentSwingView.studentAdded(new Student("1", "test")));
+		studentSwingView.studentAdded(new Student("1", "test"));
 		String[] listContent = window.list().contents();
 		assertThat(listContent).containsExactly(new Student("1", "test").toString());
 		window.label(ERROR_MESSAGE_LABEL).requireText(" ");
@@ -136,7 +136,7 @@ public class StudentSwingViewTest extends AssertJSwingJUnitTestCase {
 			listStudentModel.addElement(new Student("2", "test2"));
 		});
 		// execute
-		GuiActionRunner.execute(() -> studentSwingView.studentRemove(new Student("1", "test1")));
+		studentSwingView.studentRemove(new Student("1", "test1"));
 		// verify
 		String[] listContent = window.list().contents();
 		assertThat(listContent).containsExactly(new Student("2", "test2").toString());
