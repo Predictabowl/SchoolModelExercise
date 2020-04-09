@@ -43,12 +43,12 @@ public class StudentSwingView extends JFrame implements StudentView {
 	private JScrollPane scrollPane;
 	private SchoolController schoolController;
 	
-	static final String ERROR_MESSAGE_LABEL = "errorMessageLabel";
-	static final String STUDENT_LIST = "studentList";
-	static final String NAME_TEXT = "nameTextBox";
-	static final String ID_TEXT = "idTextBox";
-	static final String ADD_BUTTON = "Add";
-	static final String DELETE_BUTTON = "Delete Selected";
+	protected static final String ERROR_MESSAGE_LABEL = "errorMessageLabel";
+	protected static final String STUDENT_LIST = "studentList";
+	protected static final String NAME_TEXT = "nameTextBox";
+	protected static final String ID_TEXT = "idTextBox";
+	protected static final String ADD_BUTTON = "Add";
+	protected static final String DELETE_BUTTON = "Delete Selected";
 
 	/**
 	 * Launch the application.
