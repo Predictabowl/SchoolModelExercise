@@ -4,6 +4,8 @@ import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import static com.example.integration.school.view.StudentSwingView.*;
+
 import java.util.Arrays;
 
 import javax.swing.DefaultListModel;
@@ -25,12 +27,6 @@ import com.example.integration.school.model.Student;
 @RunWith(GUITestRunner.class)
 public class StudentSwingViewTest extends AssertJSwingJUnitTestCase {
 
-	private static final String ERROR_MESSAGE_LABEL = "errorMessageLabel";
-	private static final String STUDENT_LIST = "studentList";
-	private static final String NAME_TEXT = "nameTextBox";
-	private static final String ID_TEXT = "idTextBox";
-	private static final String ADD_BUTTON = "Add";
-	private static final String DELETE_BUTTON = "Delete Selected";
 	private StudentSwingView studentSwingView;
 	private FrameFixture window;
 	private SchoolController schoolController;

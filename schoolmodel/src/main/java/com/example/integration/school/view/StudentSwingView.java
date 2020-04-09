@@ -42,6 +42,13 @@ public class StudentSwingView extends JFrame implements StudentView {
 	private JLabel lblErrorMessage;
 	private JScrollPane scrollPane;
 	private SchoolController schoolController;
+	
+	static final String ERROR_MESSAGE_LABEL = "errorMessageLabel";
+	static final String STUDENT_LIST = "studentList";
+	static final String NAME_TEXT = "nameTextBox";
+	static final String ID_TEXT = "idTextBox";
+	static final String ADD_BUTTON = "Add";
+	static final String DELETE_BUTTON = "Delete Selected";
 
 	/**
 	 * Launch the application.
@@ -119,12 +126,12 @@ public class StudentSwingView extends JFrame implements StudentView {
 				.addListSelectionListener(arg0 -> btnDeleteSelected.setEnabled(listStudents.getSelectedIndex() != -1));
 		scrollPane.setViewportView(listStudents);
 		listStudents.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		listStudents.setName("studentList");
+		listStudents.setName(STUDENT_LIST);
 	}
 
 	private void makeErrorLabel() {
 		lblErrorMessage = new JLabel(" ");
-		lblErrorMessage.setName("errorMessageLabel");
+		lblErrorMessage.setName(ERROR_MESSAGE_LABEL);
 		GridBagConstraints gbc_lblErrorMessage = new GridBagConstraints();
 		gbc_lblErrorMessage.gridx = 1;
 		gbc_lblErrorMessage.gridy = 5;
@@ -132,7 +139,7 @@ public class StudentSwingView extends JFrame implements StudentView {
 	}
 
 	private void makeDeleteButton() {
-		btnDeleteSelected = new JButton("Delete Selected");
+		btnDeleteSelected = new JButton(DELETE_BUTTON);
 		btnDeleteSelected.addActionListener(arg0 -> schoolController.deleteStudent(listStudents.getSelectedValue()));
 		btnDeleteSelected.setEnabled(false);
 		GridBagConstraints gbc_btnDeleteSelected = new GridBagConstraints();
@@ -146,7 +153,7 @@ public class StudentSwingView extends JFrame implements StudentView {
 	private void makeIdTextBox(KeyAdapter btnAddEnabler) {
 		txtId = new JTextField();
 		txtId.addKeyListener(btnAddEnabler);
-		txtId.setName("idTextBox");
+		txtId.setName(ID_TEXT);
 		GridBagConstraints gbc_txtId = new GridBagConstraints();
 		gbc_txtId.insets = new Insets(0, 0, 5, 0);
 		gbc_txtId.fill = GridBagConstraints.HORIZONTAL;
@@ -169,7 +176,7 @@ public class StudentSwingView extends JFrame implements StudentView {
 	private void makeNameTextBox(KeyListener btnAddEnabler) {
 		txtName = new JTextField();
 		txtName.addKeyListener(btnAddEnabler);
-		txtName.setName("nameTextBox");
+		txtName.setName(NAME_TEXT);
 		GridBagConstraints gbc_txtName = new GridBagConstraints();
 		gbc_txtName.insets = new Insets(0, 0, 5, 0);
 		gbc_txtName.fill = GridBagConstraints.HORIZONTAL;
@@ -180,7 +187,7 @@ public class StudentSwingView extends JFrame implements StudentView {
 	}
 
 	private void makeAddButton() {
-		btnAdd = new JButton("Add");
+		btnAdd = new JButton(ADD_BUTTON);
 		btnAdd.addActionListener(arg0 -> schoolController.newStudent(new Student(txtId.getText(), txtName.getText())));
 		btnAdd.setEnabled(false);
 		GridBagConstraints gbc_btnAdd = new GridBagConstraints();
