@@ -75,7 +75,7 @@ public class StudentSwingViewIT extends AssertJSwingJUnitTestCase {
 		Student	student2 = new Student("2", "Carlo");
 		studentRespository.save(student);
 		studentRespository.save(student2);
-		GuiActionRunner.execute(() -> schoolController.allStudents());
+		schoolController.allStudents();
 		assertThat(window.list().contents()).containsExactly(student.toString(),student2.toString());
 	}
 	
@@ -99,7 +99,7 @@ public class StudentSwingViewIT extends AssertJSwingJUnitTestCase {
 	
 	@Test @GUITest
 	public void test_deleteButton_success() {
-		GuiActionRunner.execute(() -> schoolController.newStudent(new Student("1", "Condannato")));
+		schoolController.newStudent(new Student("1", "Condannato"));
 		window.list().selectItem(0);
 		window.button(JButtonMatcher.withText(DELETE_BUTTON)).click();
 		assertThat(window.list().contents()).isEmpty();
