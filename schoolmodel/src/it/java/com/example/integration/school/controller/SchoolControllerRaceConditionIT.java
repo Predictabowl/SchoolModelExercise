@@ -2,6 +2,7 @@ package com.example.integration.school.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -81,6 +82,17 @@ public class SchoolControllerRaceConditionIT {
 //		await().atMost(5, TimeUnit.SECONDS).until(() -> futures.stream().allMatch(p -> p.isDone()));
 		
 		assertThat(studentRepository.findAll()).containsExactly(student);
+		
+		// we print the exceptions stacktrace 
+		futures.stream().peek(f -> {
+			try {
+				f.get();
+			} catch (InterruptedException | ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}).collect(Collectors.toList());
+		
 		executor.shutdown();
 	}
 
