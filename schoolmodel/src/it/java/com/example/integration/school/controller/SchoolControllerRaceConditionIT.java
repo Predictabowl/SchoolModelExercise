@@ -15,9 +15,14 @@ import com.example.integration.school.model.Student;
 import com.example.integration.school.repository.*;
 import com.example.integration.school.view.StudentView;
 import com.mongodb.*;
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.IndexOptions;
+import com.mongodb.client.model.Indexes;
 
 import org.assertj.swing.timing.*;
+import org.bson.Document;
+
 import static org.awaitility.Awaitility.*;
 
 import org.junit.Before;
@@ -39,6 +44,9 @@ public class SchoolControllerRaceConditionIT {
 		MongoClient client = new MongoClient("localhost");
 		MongoDatabase database = client.getDatabase(StudentMongoRepository.SCHOOL_DB_NAME);
 		database.drop();
+		MongoCollection<Document> studenCollection = database
+				.getCollection(StudentMongoRepository.STUDENT_COLLECTION_NAME);
+		studenCollection.createIndex(Indexes.ascending("id"), new IndexOptions().unique(true));
 		studentRepository = new StudentMongoRepository(client);
 	}
 
