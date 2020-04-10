@@ -2,6 +2,9 @@ package com.example.integration.school.view;
 
 import static com.example.integration.school.view.StudentSwingView.*;
 import static org.assertj.core.api.Assertions.*;
+import static org.awaitility.Awaitility.*;
+
+import java.util.concurrent.TimeUnit;
 
 import org.assertj.swing.core.matcher.JButtonMatcher;
 import org.assertj.swing.edt.GuiActionRunner;
@@ -23,6 +26,7 @@ import com.mongodb.ServerAddress;
 @RunWith(GUITestRunner.class)
 public class ModelViewControllerIT extends AssertJSwingJUnitTestCase {
 
+	private static final int TIMEOUT_SEC = 5;
 	@SuppressWarnings("rawtypes")
 	@ClassRule
 	public static final GenericContainer mongo = new GenericContainer("mongo:4.2.3").withExposedPorts(27017);
@@ -52,22 +56,24 @@ public class ModelViewControllerIT extends AssertJSwingJUnitTestCase {
 	protected void onTearDown() {
 		client.close();
 	}
-	
+
 	@Test
 	public void test_addStudent() {
 		window.textBox(ID_TEXT).enterText("1");
 		window.textBox(NAME_TEXT).enterText("test");
 		window.button(JButtonMatcher.withText(ADD_BUTTON)).click();
-		assertThat(studentRepository.findById("1")).isEqualTo(new Student("1", "test"));
+		await().atMost(TIMEOUT_SEC, TimeUnit.SECONDS)
+				.untilAsserted(() -> assertThat(studentRepository.findById("1")).isEqualTo(new Student("1", "test")));
 	}
-	
+
 	@Test
 	public void test_deleteStudent() {
 		studentRepository.save(new Student("99", "Mario"));
 		schoolController.allStudents();
 		window.list().selectItem(0);
 		window.button(JButtonMatcher.withText(DELETE_BUTTON)).click();
-		assertThat(studentRepository.findById("99")).isNull();
+		await().atMost(TIMEOUT_SEC, TimeUnit.SECONDS)
+				.untilAsserted(() -> assertThat(studentRepository.findById("99")).isNull());
 	}
 
 }

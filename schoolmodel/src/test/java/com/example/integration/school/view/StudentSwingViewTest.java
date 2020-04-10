@@ -1,6 +1,8 @@
 package com.example.integration.school.view;
 
 import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
+import org.assertj.swing.timing.Timeout;
+
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -20,6 +22,7 @@ import org.assertj.swing.fixture.JTextComponentFixture;
 import org.assertj.swing.junit.runner.GUITestRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 
 import com.example.integration.school.controller.SchoolController;
 import com.example.integration.school.model.Student;
@@ -163,6 +166,6 @@ public class StudentSwingViewTest extends AssertJSwingJUnitTestCase {
 		});
 		window.list(STUDENT_LIST).selectItem(1);
 		window.button(JButtonMatcher.withText(DELETE_BUTTON)).click();
-		verify(schoolController).deleteStudent(student2);
+		verify(schoolController, timeout(TIMEOUT)).deleteStudent(student2);
 	}
 }

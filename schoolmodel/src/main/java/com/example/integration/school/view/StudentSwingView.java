@@ -141,7 +141,8 @@ public class StudentSwingView extends JFrame implements StudentView {
 
 	private void makeDeleteButton() {
 		btnDeleteSelected = new JButton(DELETE_BUTTON);
-		btnDeleteSelected.addActionListener(arg0 -> schoolController.deleteStudent(listStudents.getSelectedValue()));
+		btnDeleteSelected.addActionListener(
+				arg0 -> new Thread(() -> schoolController.deleteStudent(listStudents.getSelectedValue())).start());
 		btnDeleteSelected.setEnabled(false);
 		GridBagConstraints gbc_btnDeleteSelected = new GridBagConstraints();
 		gbc_btnDeleteSelected.insets = new Insets(0, 0, 5, 0);
@@ -190,14 +191,8 @@ public class StudentSwingView extends JFrame implements StudentView {
 	private void makeAddButton() {
 		btnAdd = new JButton(ADD_BUTTON);
 		btnAdd.addActionListener(
-				arg0 -> new Thread(() -> {				
-					try {
-						Thread.sleep(1000);
-					} catch (Exception e) {
-						// TODO: handle exception
-					}
-					schoolController.newStudent(new Student(txtId.getText(), txtName.getText()));						
-				}).start());
+				arg0 -> new Thread(() -> schoolController.newStudent(new Student(txtId.getText(), txtName.getText())))
+						.start());
 		btnAdd.setEnabled(false);
 		GridBagConstraints gbc_btnAdd = new GridBagConstraints();
 		gbc_btnAdd.gridwidth = 2;

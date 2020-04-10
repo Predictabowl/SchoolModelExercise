@@ -92,7 +92,7 @@ public class StudentSwingViewIT extends AssertJSwingJUnitTestCase {
 		window.textBox(ID_TEXT).enterText("1");
 		window.textBox(NAME_TEXT).enterText("test1");
 		window.button(JButtonMatcher.withText(ADD_BUTTON)).click();
-		await().atMost(5, TimeUnit.SECONDS).untilAsserted(
+		await().atMost(TIMEOUT, TimeUnit.MILLISECONDS).untilAsserted(
 				() -> assertThat(window.list().contents()).containsExactly(new Student("1", "test1").toString()));
 	}
 
@@ -119,8 +119,15 @@ public class StudentSwingViewIT extends AssertJSwingJUnitTestCase {
 	public void test_deleteButton_success() {
 		schoolController.newStudent(new Student("1", "Condannato"));
 		window.list().selectItem(0);
+		GuiActionRunner.execute(() -> studentSwingView.showError("Mario va al mare", new Student("3", "Mario")));
 		window.button(JButtonMatcher.withText(DELETE_BUTTON)).click();
-		assertThat(window.list().contents()).isEmpty();
+		Pause.pause(new Condition("Error label to contain text") {
+			@Override
+			public boolean test() {
+				return window.list().contents().length == 0;
+			}
+		}, timeout(TIMEOUT));
+//		assertThat(window.list().contents()).isEmpty();
 	}
 
 	@Test
@@ -130,6 +137,7 @@ public class StudentSwingViewIT extends AssertJSwingJUnitTestCase {
 		GuiActionRunner.execute(() -> studentSwingView.getListStudentModel().addElement(student));
 		window.list().selectItem(0);
 		window.button(JButtonMatcher.withText(DELETE_BUTTON)).click();
-		window.label(ERROR_MESSAGE_LABEL).requireText("No existing student with id 1: " + student);
+		await().atMost(TIMEOUT, TimeUnit.MILLISECONDS).untilAsserted(
+				() -> window.label(ERROR_MESSAGE_LABEL).requireText("No existing student with id 1: " + student));
 	}
 }
