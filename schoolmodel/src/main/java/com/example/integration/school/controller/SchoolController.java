@@ -18,7 +18,7 @@ public class SchoolController {
 		studentView.showAllStudents(studentRepository.findAll());
 	}
 
-	public void newStudent(Student student) {
+	public synchronized void newStudent(Student student) {
 		if (studentRepository.findById(student.getId()) != null) {
 			studentView.showError("Already existing student with id " + student.getId(), studentRepository.findById(student.getId()));
 		} else {
@@ -27,7 +27,7 @@ public class SchoolController {
 		}
 	}
 
-	public void deleteStudent(Student student) {
+	public synchronized void deleteStudent(Student student) {
 		if (studentRepository.findById(student.getId()) == null) {
 			studentView.showError("No existing student with id "+student.getId(), student);
 		} else {
