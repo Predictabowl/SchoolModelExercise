@@ -65,6 +65,11 @@
 			<artifactId>mongo-java-server</artifactId>
 			<version>1.27.0</version>
 		</dependency>
+		<dependency>
+			<groupId>info.picocli</groupId>
+			<artifactId>picocli</artifactId>
+			<version>4.2.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -180,6 +185,7 @@
 						<configuration>
 							<sources>
 								<source>src/it/java</source>
+								<source>src/e2e/java</source>
 							</sources>
 						</configuration>
 					</execution>
@@ -224,10 +230,26 @@
 				<version>2.22.1</version>
 				<executions>
 					<execution>
+						<id>default-it</id>
 						<goals>
 							<goal>integration-test</goal>
 							<goal>verify</goal>
 						</goals>
+					</execution>
+					<execution>
+						<id>e2e-tests</id>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+						<configuration>
+							<excludes>
+								<exclude>**/*IT.java</exclude>
+							</excludes>
+							<includes>
+								<include>**/*E2E.java</include>
+							</includes>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
