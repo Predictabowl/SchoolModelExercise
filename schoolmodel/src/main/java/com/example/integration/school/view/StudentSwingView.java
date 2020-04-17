@@ -50,21 +50,7 @@ public class StudentSwingView extends JFrame implements StudentView {
 	protected static final String ADD_BUTTON = "Add";
 	protected static final String DELETE_BUTTON = "Delete Selected";
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					StudentSwingView frame = new StudentSwingView();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+
 
 	/**
 	 * Create the frame.

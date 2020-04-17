@@ -128,7 +128,7 @@
 									<!-- Temporary main class, should be changed once the actual main 
 										class is made -->
 									<manifest>
-										<mainClass>com.example.integration.school.view.StudentSwingView</mainClass>
+										<mainClass>com.example.integration.school.app.swing.SchoolSwingApp</mainClass>
 									</manifest>
 								</archive>
 							</configuration>

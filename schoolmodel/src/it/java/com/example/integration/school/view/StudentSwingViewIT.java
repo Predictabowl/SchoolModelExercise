@@ -28,6 +28,9 @@ import de.bwaldvogel.mongo.backend.memory.MemoryBackend;
 @RunWith(GUITestRunner.class)
 public class StudentSwingViewIT extends AssertJSwingJUnitTestCase {
 
+	public static final String STUDENT_COLLECTION_NAME = "student";
+	public static final String SCHOOL_DB_NAME = "school";
+	
 	private static MongoServer server;
 	private static InetSocketAddress serverAddress;
 	private MongoClient client;
@@ -50,7 +53,7 @@ public class StudentSwingViewIT extends AssertJSwingJUnitTestCase {
 	@Override
 	protected void onSetUp() {
 		client = new MongoClient(new ServerAddress(serverAddress));
-		studentRespository = new StudentMongoRepository(client);
+		studentRespository = new StudentMongoRepository(client,SCHOOL_DB_NAME,STUDENT_COLLECTION_NAME);
 		for (Student student : studentRespository.findAll()) {
 			studentRespository.delete(student.getId());
 		}

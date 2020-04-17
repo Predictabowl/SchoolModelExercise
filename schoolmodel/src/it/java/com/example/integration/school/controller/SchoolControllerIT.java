@@ -22,13 +22,16 @@ public class SchoolControllerIT {
 	@Mock
 	private StudentView studentView;
 	
+	public static final String STUDENT_COLLECTION_NAME = "student";
+	public static final String SCHOOL_DB_NAME = "school";
+	
 	private StudentRepository studentRepository;
 	private SchoolController schoolController;
 	
 	@Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
-		studentRepository = new StudentMongoRepository(new MongoClient("localhost"));
+		studentRepository = new StudentMongoRepository(new MongoClient("localhost"),SCHOOL_DB_NAME,STUDENT_COLLECTION_NAME);
 		for (Student student : studentRepository.findAll()) {
 			studentRepository.delete(student.getId());
 		}

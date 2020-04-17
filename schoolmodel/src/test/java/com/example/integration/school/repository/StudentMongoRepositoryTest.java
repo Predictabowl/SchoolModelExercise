@@ -23,10 +23,11 @@ import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
-import static com.example.integration.school.repository.StudentMongoRepository.*;
-
 public class StudentMongoRepositoryTest {
-
+	
+	public static final String STUDENT_COLLECTION_NAME = "student";
+	public static final String SCHOOL_DB_NAME = "school";
+	
 	private static MongoServer server;
 	private static InetSocketAddress serverAddress;
 	private MongoClient client;
@@ -47,7 +48,7 @@ public class StudentMongoRepositoryTest {
 	@Before
 	public void setUp() throws Exception {
 		client = new MongoClient(new ServerAddress(serverAddress));
-		studentRepository = new StudentMongoRepository(client);
+		studentRepository = new StudentMongoRepository(client,SCHOOL_DB_NAME, STUDENT_COLLECTION_NAME);
 		MongoDatabase database = client.getDatabase(SCHOOL_DB_NAME);
 		database.drop();
 		studentCollection = database.getCollection(STUDENT_COLLECTION_NAME);
