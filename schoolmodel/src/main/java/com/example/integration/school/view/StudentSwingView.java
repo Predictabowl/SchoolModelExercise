@@ -1,6 +1,5 @@
 package com.example.integration.school.view;
 
-import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -43,12 +42,12 @@ public class StudentSwingView extends JFrame implements StudentView {
 	private JScrollPane scrollPane;
 	private SchoolController schoolController;
 	
-	protected static final String ERROR_MESSAGE_LABEL = "errorMessageLabel";
-	protected static final String STUDENT_LIST = "studentList";
-	protected static final String NAME_TEXT = "nameTextBox";
-	protected static final String ID_TEXT = "idTextBox";
-	protected static final String ADD_BUTTON = "Add";
-	protected static final String DELETE_BUTTON = "Delete Selected";
+	public static final String ERROR_MESSAGE_LABEL = "errorMessageLabel";
+	public static final String STUDENT_LIST = "studentList";
+	public static final String NAME_TEXT = "nameTextBox";
+	public static final String ID_TEXT = "idTextBox";
+	public static final String ADD_BUTTON = "Add";
+	public static final String DELETE_BUTTON = "Delete Selected";
 
 
 
@@ -134,6 +133,7 @@ public class StudentSwingView extends JFrame implements StudentView {
 		gbc_btnDeleteSelected.gridx = 0;
 		gbc_btnDeleteSelected.gridy = 4;
 		contentPane.add(btnDeleteSelected, gbc_btnDeleteSelected);
+		
 	}
 
 	private void makeIdTextBox(KeyAdapter btnAddEnabler) {
@@ -147,6 +147,7 @@ public class StudentSwingView extends JFrame implements StudentView {
 		gbc_txtId.gridy = 0;
 		contentPane.add(txtId, gbc_txtId);
 		txtId.setColumns(10);
+		
 	}
 
 	private void makeNameLabel() {
@@ -174,7 +175,11 @@ public class StudentSwingView extends JFrame implements StudentView {
 
 	private void makeAddButton() {
 		btnAdd = new JButton(ADD_BUTTON);
-		btnAdd.addActionListener(arg0 -> schoolController.newStudent(new Student(txtId.getText(), txtName.getText())));
+		btnAdd.addActionListener(arg0 -> {
+			schoolController.newStudent(new Student(txtId.getText(), txtName.getText()));
+			txtId.setText("");
+			txtName.setText("");
+		});
 		btnAdd.setEnabled(false);
 		GridBagConstraints gbc_btnAdd = new GridBagConstraints();
 		gbc_btnAdd.gridwidth = 2;

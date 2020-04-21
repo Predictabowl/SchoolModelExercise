@@ -144,11 +144,15 @@ public class StudentSwingViewTest extends AssertJSwingJUnitTestCase {
 	}
 
 	@Test
-	public void test_AddButton_should_delegate_to_SchoolController_newStudent() {
-		window.textBox(ID_TEXT).enterText("1");
-		window.textBox(NAME_TEXT).enterText("test");
+	public void test_AddButton_should_delegate_to_SchoolController_newStudent_and_empty_text_boxes() {
+		JTextComponentFixture idText = window.textBox(ID_TEXT);
+		idText.enterText("1");
+		JTextComponentFixture nameText = window.textBox(NAME_TEXT);
+		nameText.enterText("test");
 		window.button(JButtonMatcher.withText(ADD_BUTTON)).click();
 		verify(schoolController).newStudent(new Student("1", "test"));
+		assertThat(idText.requireEmpty());
+		assertThat(nameText.requireEmpty());
 	}
 
 	@Test
