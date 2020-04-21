@@ -10,10 +10,13 @@ import com.example.integration.school.model.Student;
 
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
+
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import javax.swing.JTextField;
 import java.awt.Insets;
 
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JList;
@@ -195,10 +198,28 @@ public class StudentSwingView extends JFrame implements StudentView {
 		scrollPane.setViewportView(listStudents);
 		listStudents.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		listStudents.setName(STUDENT_LIST);
+		listStudents.setCellRenderer(new DefaultListCellRenderer() {
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
+					boolean cellHasFocus) {
+				return super.getListCellRendererComponent(list, getDisplayString((Student)value), index, isSelected, cellHasFocus);
+			}
+			
+		});
 	}
 
 	public void setSchoolController(SchoolController schoolController) {
 		this.schoolController = schoolController;
+	}
+	
+	private String getDisplayString(Student student) {
+		return student.getId()+" - "+student.getName();
 	}
 
 	@Override
@@ -208,12 +229,12 @@ public class StudentSwingView extends JFrame implements StudentView {
 
 	@Override
 	public void showError(String message, Student student) {
-		lblErrorMessage.setText(message + ": " + student);
+		lblErrorMessage.setText(message + ": " + getDisplayString(student));
 	}
 
 	@Override
 	public void showErrorStudentNotFound(String message, Student student) {
-		lblErrorMessage.setText(message+": "+student);
+		lblErrorMessage.setText(message+": "+getDisplayString(student));
 		listStudentModel.removeElement(student);
 	}
 

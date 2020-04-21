@@ -108,7 +108,7 @@ public class StudentSwingViewTest extends AssertJSwingJUnitTestCase {
 		Student student2 = new Student("2", "test2");
 		GuiActionRunner.execute(() -> studentSwingView.showAllStudents(Arrays.asList(student1, student2)));
 		String[] listContents = window.list().contents(); // why here we don't need a name to find the list?
-		assertThat(listContents).containsExactly(student1.toString(), student2.toString());
+		assertThat(listContents).containsExactly("1 - test1","2 - test2");
 	}
 
 	@Test
@@ -116,7 +116,7 @@ public class StudentSwingViewTest extends AssertJSwingJUnitTestCase {
 	public void test_showError_should_show_the_message_in_the_error_label() {
 		Student student = new Student("1", "test");
 		GuiActionRunner.execute(() -> studentSwingView.showError("error message", student));
-		window.label(ERROR_MESSAGE_LABEL).requireText("error message: " + student);
+		window.label(ERROR_MESSAGE_LABEL).requireText("error message: 1 - test");
 	}
 
 	@Test
@@ -124,7 +124,7 @@ public class StudentSwingViewTest extends AssertJSwingJUnitTestCase {
 	public void test_studentAdded_should_add_the_student_to_the_list_and_clear_the_error() {
 		GuiActionRunner.execute(() -> studentSwingView.studentAdded(new Student("1", "test")));
 		String[] listContent = window.list().contents();
-		assertThat(listContent).containsExactly(new Student("1", "test").toString());
+		assertThat(listContent).containsExactly("1 - test");
 		window.label(ERROR_MESSAGE_LABEL).requireText(" ");
 	}
 
@@ -141,7 +141,7 @@ public class StudentSwingViewTest extends AssertJSwingJUnitTestCase {
 		GuiActionRunner.execute(() -> studentSwingView.studentRemove(new Student("1", "test1")));
 		// verify
 		String[] listContent = window.list().contents();
-		assertThat(listContent).containsExactly(new Student("2", "test2").toString());
+		assertThat(listContent).containsExactly("2 - test2");
 		window.label(ERROR_MESSAGE_LABEL).requireText(" ");
 	}
 
@@ -181,7 +181,7 @@ public class StudentSwingViewTest extends AssertJSwingJUnitTestCase {
 			listStudentModel.add(1, student2);
 		});
 		GuiActionRunner.execute(() -> studentSwingView.showErrorStudentNotFound("Error Message", student1));
-		window.label(ERROR_MESSAGE_LABEL).requireText("Error Message: "+student1);
-		assertThat(window.list(STUDENT_LIST).contents()).containsExactly(student2.toString());
+		window.label(ERROR_MESSAGE_LABEL).requireText("Error Message: 1 - test 1");
+		assertThat(window.list(STUDENT_LIST).contents()).containsExactly("2 - test 2");
 	}
 }

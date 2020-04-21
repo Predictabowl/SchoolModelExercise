@@ -44,4 +44,4 @@ Feature: Student View High Level
 		But The student is in the meantime removed from the database
 		When The user click the "Delete Selected" button
 		Then An error message will be shown containing the data of the selected student
-		And The student is removed from the list # new specification
+		And The student is removed from the list
