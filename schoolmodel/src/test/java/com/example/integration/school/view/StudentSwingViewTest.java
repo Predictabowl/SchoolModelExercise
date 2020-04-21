@@ -1,12 +1,14 @@
 package com.example.integration.school.view;
 
 import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
+
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import static com.example.integration.school.view.StudentSwingView.*;
 
 import java.util.Arrays;
+import java.util.regex.Pattern;
 
 import javax.swing.DefaultListModel;
 
@@ -167,5 +169,19 @@ public class StudentSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.list(STUDENT_LIST).selectItem(1);
 		window.button(JButtonMatcher.withText(DELETE_BUTTON)).click();
 		verify(schoolController).deleteStudent(student2);
+	}
+	
+	@Test @GUITest
+	public void test_showErrorStudentNotFound() {
+		Student student1 = new Student("1", "test 1");
+		Student student2 = new Student("2", "test 2");
+		GuiActionRunner.execute(() ->{
+			DefaultListModel<Student> listStudentModel = studentSwingView.getListStudentModel();
+			listStudentModel.add(0, student1);
+			listStudentModel.add(1, student2);
+		});
+		GuiActionRunner.execute(() -> studentSwingView.showErrorStudentNotFound("Error Message", student1));
+		window.label(ERROR_MESSAGE_LABEL).requireText("Error Message: "+student1);
+		assertThat(window.list(STUDENT_LIST).contents()).containsExactly(student2.toString());
 	}
 }

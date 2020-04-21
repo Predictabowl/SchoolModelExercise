@@ -115,5 +115,6 @@ public class StudentSwingViewIT extends AssertJSwingJUnitTestCase {
 		window.list().selectItem(0);
 		window.button(JButtonMatcher.withText(DELETE_BUTTON)).click();
 		window.label(ERROR_MESSAGE_LABEL).requireText("No existing student with id 1: "+student);
+		assertThat(window.list().contents()).isEmpty();
 	}
 }
