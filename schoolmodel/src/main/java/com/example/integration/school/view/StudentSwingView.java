@@ -50,7 +50,7 @@ public class StudentSwingView extends JFrame implements StudentView {
 	private JButton btnDeleteSelected;
 	private JLabel lblErrorMessage;
 	private JScrollPane scrollPane;
-	private SchoolController schoolController;
+	private transient SchoolController schoolController;
 
 
 
