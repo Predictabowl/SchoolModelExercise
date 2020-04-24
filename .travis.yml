@@ -12,9 +12,7 @@ cache:
 addons:
   sonarcloud:
     organization: "predictabowl"
-    token:
-      secure: "tlav5HL7YEwAkaZJPbUrTAQP24i8h3p4sGKvNZozvWp77K96MODHPVNa5OkOyiafw2dCQNakKEGHzQKUf8DDSrJWyZ5797Ochr8WJVxIuNUa3dodUnZDpKWrrOZm6ChWB5fb4o90A5kJvGoO2LwpsQ1xpJbhOz1GJLvs9O0jBHIxnKUupOT9TgAm85ijI8IluvQUd3r79e5ZpwmIE/lmAiLnD3I+IDQcRCfr48Bs5e/t8MOndnxG4XrhGu4da98+3dLdZDyO+IawyV3RIOMqBHQTajre9oPwc7MGnYVmeQr+h3LrLmpiivVdEm77P7POHcClpnru7RVjYTpW4agmLV9eYof7fAmomh4mbBWSbIggCKQSbZGfUMXwJUJDDwyx2GX+Z0kIbd9L3M8RjmNxoIvJTXLMyA0LnMf/pxM47zoXti6YfnsDJ0hxNArgoeqLXCSkB7r2CyWQ/Ve64SVB6L20MpiHJfjOuHXaD6CAtZfW6KhV1rsZ1r9dHoGmtYp7zIG38QJQNenATeEjYusUd8aVqlw9xzrqUUudiB85ubjxZMDRR8chb0YCsUBZ5ybO7qYVY//0KtOvJPmQCXotGPy2jVLe0aWCz0vOKmMO4++azOvDxkLmTTWh5D7/Dg9nVAvdcca/fO3bHmDM+Wwcyb2wOLmRqPX0bjeROydcxRs="
-      
+    token: $SONAR_TOKEN
    
 script:
   # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
