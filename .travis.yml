@@ -18,7 +18,7 @@ addons:
    
 script:
   # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
-- mvn -f schoolmodel/pom.xml clean verify -Pjacoco coveralls:report sonar:sonar
+- mvn -f schoolmodel/pom.xml clean verify -Pjacoco coveralls:report sonar:sonar -Dsonar.projectKey=Predictabowl_SchoolModelExercise
 
 
 
