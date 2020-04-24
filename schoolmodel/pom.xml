@@ -54,6 +54,10 @@
 			these variables were made automatically by window builder. -->
 		<sonar.issue.ignore.multicriteria.e6.ruleKey>java:S117</sonar.issue.ignore.multicriteria.e6.ruleKey>
 		<sonar.issue.ignore.multicriteria.e6.resourceKey>**/StudentSwingView.java</sonar.issue.ignore.multicriteria.e6.resourceKey>
+		<sonar.coverage.exclusions>
+			**/model/*.*,
+			**/SchoolSwingApp.*
+		</sonar.coverage.exclusions>
 	</properties>
 
 	<dependencies>
@@ -203,8 +207,8 @@
 					<configuration>
 						<!-- there's no main class yet, this is for posterity -->
 						<excludes>
-							<exclude>**/Main.*/</exclude>
-							<exclude>**/Student.*/</exclude>
+							<exclude>**/model/*.*</exclude>
+							<exclude>**/SchoolSwingApp.*</exclude>
 						</excludes>
 					</configuration>
 					<executions>
