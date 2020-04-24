@@ -41,7 +41,6 @@ public class StudentSwingView extends JFrame implements StudentView {
 	public static final String DELETE_BUTTON = "Delete Selected";
 	private JPanel contentPane;
 	private JTextField txtId;
-	private JLabel lblName;
 	private JTextField txtName;
 	private JButton btnAdd;
 	
@@ -49,7 +48,6 @@ public class StudentSwingView extends JFrame implements StudentView {
 	private DefaultListModel<Student> listStudentModel;
 	private JButton btnDeleteSelected;
 	private JLabel lblErrorMessage;
-	private JScrollPane scrollPane;
 	private transient SchoolController schoolController;
 
 
@@ -125,7 +123,7 @@ public class StudentSwingView extends JFrame implements StudentView {
 		
 	}
 
-	private void makeErrorLabel() {
+	private void makeErrorLabel() { 
 		lblErrorMessage = new JLabel(" ");
 		lblErrorMessage.setName(ERROR_MESSAGE_LABEL);
 		GridBagConstraints gbc_lblErrorMessage = new GridBagConstraints();
@@ -159,7 +157,7 @@ public class StudentSwingView extends JFrame implements StudentView {
 	}
 
 	private void makeNameLabel() {
-		lblName = new JLabel("name");
+		JLabel lblName = new JLabel("name");
 		GridBagConstraints gbc_lblName = new GridBagConstraints();
 		gbc_lblName.anchor = GridBagConstraints.EAST;
 		gbc_lblName.insets = new Insets(0, 0, 5, 5);
@@ -182,7 +180,7 @@ public class StudentSwingView extends JFrame implements StudentView {
 	}
 
 	private void makeStudentList() {
-		scrollPane = new JScrollPane();
+		JScrollPane scrollPane = new JScrollPane();
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane.gridwidth = 2;
@@ -191,8 +189,8 @@ public class StudentSwingView extends JFrame implements StudentView {
 		gbc_scrollPane.gridy = 3;
 		contentPane.add(scrollPane, gbc_scrollPane);
 
-		listStudentModel = new DefaultListModel<Student>();
-		listStudents = new JList<Student>(listStudentModel);
+		listStudentModel = new DefaultListModel<>();
+		listStudents = new JList<>(listStudentModel);
 		listStudents
 				.addListSelectionListener(arg0 -> btnDeleteSelected.setEnabled(listStudents.getSelectedIndex() != -1));
 		scrollPane.setViewportView(listStudents);

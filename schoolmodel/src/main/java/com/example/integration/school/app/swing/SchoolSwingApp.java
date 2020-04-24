@@ -40,20 +40,18 @@ public class SchoolSwingApp implements Callable<Void> {
 
 	@Override
 	public Void call() throws Exception {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					StudentMongoRepository studentRepository = new StudentMongoRepository(
-							new MongoClient(new ServerAddress(mongoHost, mongoPort)), databaseName, collectionName);
-					StudentSwingView studentView = new StudentSwingView();
-					SchoolController schoolController = new SchoolController(studentRepository, studentView);
-					studentView.setSchoolController(schoolController);
+		EventQueue.invokeLater(() -> {
+			try {
+				StudentMongoRepository studentRepository = new StudentMongoRepository(
+						new MongoClient(new ServerAddress(mongoHost, mongoPort)), databaseName, collectionName);
+				StudentSwingView studentView = new StudentSwingView();
+				SchoolController schoolController = new SchoolController(studentRepository, studentView);
+				studentView.setSchoolController(schoolController);
 
-					studentView.setVisible(true);
-					schoolController.allStudents();
-				} catch (Exception e) {
-					logger.fatal("Exception (test)", e);
-				}
+				studentView.setVisible(true);
+				schoolController.allStudents();
+			} catch (Exception e) {
+				logger.fatal("Exception (test)", e);
 			}
 		});
 		return null;

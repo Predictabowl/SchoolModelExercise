@@ -15,7 +15,7 @@ public class StudentMongoRepository implements StudentRepository {
 
 	private MongoCollection<Document> collection;
 
-	public StudentMongoRepository(MongoClient client,String databaseName, String collectionName) {
+	public StudentMongoRepository(MongoClient client, String databaseName, String collectionName) {
 		collection = client.getDatabase(databaseName).getCollection(collectionName);
 	}
 
@@ -28,9 +28,10 @@ public class StudentMongoRepository implements StudentRepository {
 	@Override
 	public Student findById(String id) {
 		Document d = collection.find(Filters.eq("id", id)).first();
-		if (d != null)
-			return from_Document_to_Student(d);
-		return null;
+		if (d == null)
+			return null;
+		return from_Document_to_Student(d);
+
 	}
 
 	@Override
@@ -44,7 +45,7 @@ public class StudentMongoRepository implements StudentRepository {
 	}
 
 	private Student from_Document_to_Student(Document d) {
-		return new Student(d.get("id").toString(), d.getString("name").toString());
+		return new Student(d.get("id").toString(), d.getString("name"));
 	}
 
 }

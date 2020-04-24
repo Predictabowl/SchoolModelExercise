@@ -28,9 +28,32 @@
 		<cucumber.version>5.6.0</cucumber.version>
 		<sonar.version>3.7.0.1746</sonar.version>
 		<log4j.version>2.13.1</log4j.version>
-		<sonar.issue.ignore.multicriteria>e1</sonar.issue.ignore.multicriteria>
+		<sonar.issue.ignore.multicriteria>e1,e2,e3,e4,e5,e6</sonar.issue.ignore.multicriteria>
+		<!-- Rule: Inheritance should be max 5 deep. Reason: we have to extend 
+			JFrame and nothing can be done about it -->
 		<sonar.issue.ignore.multicriteria.e1.ruleKey>java:S110</sonar.issue.ignore.multicriteria.e1.ruleKey>
 		<sonar.issue.ignore.multicriteria.e1.resourceKey>**/*.java</sonar.issue.ignore.multicriteria.e1.resourceKey>
+		<!-- Rule: accesso to static should be done by the parent. Reason: It's 
+			done by JFrame.EXIT_ON_CLOSE, false positive. -->
+		<sonar.issue.ignore.multicriteria.e2.ruleKey>java:S3252</sonar.issue.ignore.multicriteria.e2.ruleKey>
+		<sonar.issue.ignore.multicriteria.e2.resourceKey>**/StudentSwingView.java</sonar.issue.ignore.multicriteria.e2.resourceKey>
+		<!-- Rule: Add at least one assertion. Reason: Assertions are made by Assertj.swing 
+			and Sonarqube don't detect them -->
+		<sonar.issue.ignore.multicriteria.e3.ruleKey>java:S2699</sonar.issue.ignore.multicriteria.e3.ruleKey>
+		<sonar.issue.ignore.multicriteria.e3.resourceKey>**/StudentSwingViewTest.java</sonar.issue.ignore.multicriteria.e3.resourceKey>
+		<!-- Rule: Remove always false expression. Reason: False positive due to 
+			a bug in Sonarqube. and Sonarqube don't detect them -->
+		<sonar.issue.ignore.multicriteria.e4.ruleKey>java:S2583</sonar.issue.ignore.multicriteria.e4.ruleKey>
+		<sonar.issue.ignore.multicriteria.e4.resourceKey>**/StudentMongoRepository.java</sonar.issue.ignore.multicriteria.e4.resourceKey>
+		<!-- Rule: Method names should comply with a naming convention. Reason: 
+			Using standard naming convention for long test methods names makes them totally 
+			unreadable -->
+		<sonar.issue.ignore.multicriteria.e5.ruleKey>java:S100</sonar.issue.ignore.multicriteria.e5.ruleKey>
+		<sonar.issue.ignore.multicriteria.e5.resourceKey>**/*.java</sonar.issue.ignore.multicriteria.e5.resourceKey>
+		<!-- Rule: Variable names should comply with a naming convention. Reason: 
+			these variables were made automatically by window builder. -->
+		<sonar.issue.ignore.multicriteria.e6.ruleKey>java:S117</sonar.issue.ignore.multicriteria.e6.ruleKey>
+		<sonar.issue.ignore.multicriteria.e6.resourceKey>**/StudentSwingView.java</sonar.issue.ignore.multicriteria.e6.resourceKey>
 	</properties>
 
 	<dependencies>

@@ -153,8 +153,8 @@ public class StudentSwingViewTest extends AssertJSwingJUnitTestCase {
 		nameText.enterText("test");
 		window.button(JButtonMatcher.withText(ADD_BUTTON)).click();
 		verify(schoolController).newStudent(new Student("1", "test"));
-		assertThat(idText.requireEmpty());
-		assertThat(nameText.requireEmpty());
+		idText.requireEmpty();
+		nameText.requireEmpty();
 	}
 
 	@Test
