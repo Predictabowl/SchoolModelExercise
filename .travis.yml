@@ -1,18 +1,21 @@
 dist: bionic
-
 language: java
-
 jdk: openjdk8
-
 services:
-    - docker
-    - xvfb
-
-# skip installation step
+- docker
+- xvfb
 install: true
-
 cache:
-    - $HOME/.m2
+- "$HOME/.m2"
+- "$HOME/.sonar/cache"
 
+addons:
+  sonarcloud:
+    organization: "predictabowl"
+    token:
+      secure: gadWuP32OkF+qM20kCdMVvXWipfidLoKGmO18lNQjsV3ogHTx2ikzDo7n54vovj6ifqG9+ttECS/vXDD/PUTZokfEFPg1K1VDybK9InVlH53bQNG3DdpqtLWn3laoxDEUrUXT2M4/FQRdlx7ZRbIXW7c+Jng9kWibp0DmRxlrpj0V07F/cw0twGhrZq0Q9D/JofpbJ6xZVh0VTdaFOBM6uuSXT5AZE3sqbi6uCjAp6GO/yKjRw2EwEHyBG14dQDwEgNHgWTLY5o64rvRbySdLDqHC87wYCDpvJM+BwaxP8C7M3Mc73cL83n7Brw3pqGmlpMAzYSDviWWcJQC7v7n2PSMnuHQ4jI46RT03T7QmjsfosfBDc7p1z0RmLl4vBTqD7w5f3J4tj4zbpm6/vW2wazjjV/ju1Wc+fVxBsM/rw6dNVpnB8XgZmteh3BWLqsCO6a6xNiDvo6SN0indCXTJJ8mTE2gnD7IllRIgAL0tUQJ1bJHLlfoT+u9KaNdVr5eC49h0cndLD2FHfiN0aj9d+0Y41vTIlk854fQMqhQk/lXyczy7OYGcDoYJcSJy0lvxiFFowMuHrir3+YhsPOHDwSE60FNzIz29XfsRPtwrrsNWVhfz+8ZYxgFIHHIZgljopqKLz/9WgokRHoD6Jp/4bvr+PjyBrwU+n0HqjgPoQo=
+   
 script:
-    - mvn -f schoolmodel/pom.xml clean verify -Pjacoco coveralls:report
+- mvn -f schoolmodel/pom.xml clean verify -Pjacoco coveralls:report
+
+  
