@@ -58,6 +58,10 @@
 			**/model/*.*,
 			**/SchoolSwingApp.*
 		</sonar.coverage.exclusions>
+		<sonar.jnuit.repotPaths>
+			${project.build.directory}/surefire-reports,
+			${project.build.directory}/failsafe-reports,
+		</sonar.jnuit.repotPaths>
 	</properties>
 
 	<dependencies>
