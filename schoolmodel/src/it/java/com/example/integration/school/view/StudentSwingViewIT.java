@@ -58,7 +58,7 @@ public class StudentSwingViewIT extends AssertJSwingJUnitTestCase {
 	@Override
 	protected void onSetUp() {
 		client = new MongoClient(new ServerAddress(serverAddress));
-		studentRespository = new StudentMongoRepository(client,SCHOOL_DB_NAME,STUDENT_COLLECTION_NAME);
+		studentRespository = new StudentMongoRepository(client, SCHOOL_DB_NAME, STUDENT_COLLECTION_NAME);
 		for (Student student : studentRespository.findAll()) {
 			studentRespository.delete(student.getId());
 		}
@@ -85,7 +85,7 @@ public class StudentSwingViewIT extends AssertJSwingJUnitTestCase {
 		studentRespository.save(student);
 		studentRespository.save(student2);
 		schoolController.allStudents();
-		assertThat(window.list().contents()).containsExactly("1 - Mario","2 - Carlo");
+		assertThat(window.list().contents()).containsExactly("1 - Mario", "2 - Carlo");
 	}
 
 	@Test
@@ -94,8 +94,8 @@ public class StudentSwingViewIT extends AssertJSwingJUnitTestCase {
 		window.textBox(ID_TEXT).enterText("1");
 		window.textBox(NAME_TEXT).enterText("test1");
 		window.button(JButtonMatcher.withText(ADD_BUTTON)).click();
-		await().atMost(TIMEOUT, TimeUnit.MILLISECONDS).untilAsserted(
-				() -> assertThat(window.list().contents()).containsExactly("1 - test1"));
+		await().atMost(TIMEOUT, TimeUnit.MILLISECONDS)
+				.untilAsserted(() -> assertThat(window.list().contents()).containsExactly("1 - test1"));
 	}
 
 	@Test
@@ -112,8 +112,7 @@ public class StudentSwingViewIT extends AssertJSwingJUnitTestCase {
 			}
 		}, timeout(TIMEOUT));
 		assertThat(window.list().contents()).isEmpty();
-		window.label(ERROR_MESSAGE_LABEL)
-				.requireText("Already existing student with id 1: 1 - test1");
+		window.label(ERROR_MESSAGE_LABEL).requireText("Already existing student with id 1: 1 - test1");
 	}
 
 	@Test
@@ -139,8 +138,12 @@ public class StudentSwingViewIT extends AssertJSwingJUnitTestCase {
 		GuiActionRunner.execute(() -> studentSwingView.getListStudentModel().addElement(student));
 		window.list().selectItem(0);
 		window.button(JButtonMatcher.withText(DELETE_BUTTON)).click();
-		assertThat(window.list().contents()).containsExactly(student.toString());
-		await().atMost(TIMEOUT, TimeUnit.MILLISECONDS).untilAsserted(
-				() -> window.label(ERROR_MESSAGE_LABEL).requireText("No existing student with id 1: 1 - test1"));
+//		assertThat(window.list().contents()).containsExactly(student.toString());
+		await().atMost(TIMEOUT, TimeUnit.MILLISECONDS).untilAsserted(() -> {
+			window.label(ERROR_MESSAGE_LABEL).requireText("No existing student with id 1: 1 - test1");
+			assertThat(window.list().contents()).isEmpty();
+		});
+
+//		window.label(ERROR_MESSAGE_LABEL).requireText("No existing student with id 1: 1 - test1");
 	}
 }
