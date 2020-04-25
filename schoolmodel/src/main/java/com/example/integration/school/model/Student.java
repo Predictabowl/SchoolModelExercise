@@ -42,12 +42,12 @@ public class Student {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
-			return false;
+					return false;
 		if (name == null) {
 			if (other.name != null)
 				return false;
 		} else if (!name.equals(other.name))
-			return false;
+					return false;
 		return true;
 	}
 

@@ -13,12 +13,10 @@ import com.mongodb.client.model.Filters;
 
 public class StudentMongoRepository implements StudentRepository {
 
-	public static final String STUDENT_COLLECTION_NAME = "student";
-	public static final String SCHOOL_DB_NAME = "school";
 	private MongoCollection<Document> collection;
 
-	public StudentMongoRepository(MongoClient client) {
-		collection = client.getDatabase(SCHOOL_DB_NAME).getCollection(STUDENT_COLLECTION_NAME);
+	public StudentMongoRepository(MongoClient client, String databaseName, String collectionName) {
+		collection = client.getDatabase(databaseName).getCollection(collectionName);
 	}
 
 	@Override
@@ -33,6 +31,7 @@ public class StudentMongoRepository implements StudentRepository {
 		if (d == null)
 			return null;
 		return from_Document_to_Student(d);
+
 	}
 
 	@Override
@@ -46,7 +45,7 @@ public class StudentMongoRepository implements StudentRepository {
 	}
 
 	private Student from_Document_to_Student(Document d) {
-		return new Student(d.get("id").toString(), d.getString("name").toString());
+		return new Student(d.get("id").toString(), d.getString("name"));
 	}
 
 }

@@ -35,11 +35,14 @@ public class ModelViewControllerIT extends AssertJSwingJUnitTestCase {
 	private FrameFixture window;
 	private StudentSwingView studentSwingView;
 	private SchoolController schoolController;
+	
+	public static final String STUDENT_COLLECTION_NAME = "student";
+	public static final String SCHOOL_DB_NAME = "school";
 
 	@Override
 	protected void onSetUp() {
 		client = new MongoClient(new ServerAddress(mongo.getContainerIpAddress(), mongo.getMappedPort(27017)));
-		studentRepository = new StudentMongoRepository(client);
+		studentRepository = new StudentMongoRepository(client,SCHOOL_DB_NAME,STUDENT_COLLECTION_NAME);
 		for (Student student : studentRepository.findAll()) {
 			studentRepository.delete(student.getId());
 		}

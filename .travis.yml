@@ -1,18 +1,23 @@
 dist: bionic
-
 language: java
-
 jdk: openjdk8
-
 services:
-    - docker
-    - xvfb
-
-# skip installation step
+- docker
+- xvfb
 install: true
-
 cache:
-    - $HOME/.m2
+- "$HOME/.m2"
+- "$HOME/.sonar/cache"
 
+addons:
+  sonarcloud:
+    organization: "predictabowl"
+    token: $SONAR_TOKEN
+   
 script:
-    - mvn -f schoolmodel/pom.xml clean verify -Pjacoco coveralls:report
+  # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
+- mvn -f schoolmodel/pom.xml clean verify -Pjacoco coveralls:report sonar:sonar -Dsonar.projectKey=Predictabowl_SchoolModelExercise
+
+
+
+  

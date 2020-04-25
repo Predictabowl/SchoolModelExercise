@@ -11,10 +11,13 @@ import com.example.integration.school.model.Student;
 
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
+
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import javax.swing.JTextField;
 import java.awt.Insets;
 
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JList;
@@ -32,40 +35,25 @@ public class StudentSwingView extends JFrame implements StudentView {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	public static final String ERROR_MESSAGE_LABEL = "errorMessageLabel";
+	public static final String STUDENT_LIST = "studentList";
+	public static final String NAME_TEXT = "nameTextBox";
+	public static final String ID_TEXT = "idTextBox";
+	public static final String ADD_BUTTON = "Add";
+	public static final String DELETE_BUTTON = "Delete Selected";
 	private JPanel contentPane;
 	private JTextField txtId;
-	private JLabel lblName;
 	private JTextField txtName;
 	private JButton btnAdd;
+	
 	private JList<Student> listStudents;
 	private DefaultListModel<Student> listStudentModel;
 	private JButton btnDeleteSelected;
 	private JLabel lblErrorMessage;
-	private JScrollPane scrollPane;
-	private SchoolController schoolController;
 
-	protected static final String ERROR_MESSAGE_LABEL = "errorMessageLabel";
-	protected static final String STUDENT_LIST = "studentList";
-	protected static final String NAME_TEXT = "nameTextBox";
-	protected static final String ID_TEXT = "idTextBox";
-	protected static final String ADD_BUTTON = "Add";
-	protected static final String DELETE_BUTTON = "Delete Selected";
+	private transient SchoolController schoolController;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					StudentSwingView frame = new StudentSwingView();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+
 
 	/**
 	 * Create the frame.
@@ -101,43 +89,15 @@ public class StudentSwingView extends JFrame implements StudentView {
 		makeErrorLabel();
 	}
 
-	private void makeIdLabel() {
-		JLabel lblId = new JLabel("id");
-		GridBagConstraints gbc_lblId = new GridBagConstraints();
-		gbc_lblId.anchor = GridBagConstraints.EAST;
-		gbc_lblId.insets = new Insets(0, 0, 5, 5);
-		gbc_lblId.gridx = 0;
-		gbc_lblId.gridy = 0;
-		contentPane.add(lblId, gbc_lblId);
+	private void clearErrorLabel() {
+		lblErrorMessage.setText(" ");
 	}
 
-	private void makeStudentList() {
-		scrollPane = new JScrollPane();
-		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-		gbc_scrollPane.fill = GridBagConstraints.BOTH;
-		gbc_scrollPane.gridwidth = 2;
-		gbc_scrollPane.insets = new Insets(0, 0, 5, 5);
-		gbc_scrollPane.gridx = 0;
-		gbc_scrollPane.gridy = 3;
-		contentPane.add(scrollPane, gbc_scrollPane);
-
-		listStudentModel = new DefaultListModel<Student>();
-		listStudents = new JList<Student>(listStudentModel);
-		listStudents
-				.addListSelectionListener(arg0 -> btnDeleteSelected.setEnabled(listStudents.getSelectedIndex() != -1));
-		scrollPane.setViewportView(listStudents);
-		listStudents.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		listStudents.setName(STUDENT_LIST);
+	DefaultListModel<Student> getListStudentModel() {
+		return listStudentModel;
 	}
 
-	private void makeErrorLabel() {
-		lblErrorMessage = new JLabel(" ");
-		lblErrorMessage.setName(ERROR_MESSAGE_LABEL);
-		GridBagConstraints gbc_lblErrorMessage = new GridBagConstraints();
-		gbc_lblErrorMessage.gridx = 1;
-		gbc_lblErrorMessage.gridy = 5;
-		contentPane.add(lblErrorMessage, gbc_lblErrorMessage);
-	}
+	
 
 	private void makeDeleteButton() {
 		btnDeleteSelected = new JButton(DELETE_BUTTON);
@@ -150,6 +110,26 @@ public class StudentSwingView extends JFrame implements StudentView {
 		gbc_btnDeleteSelected.gridx = 0;
 		gbc_btnDeleteSelected.gridy = 4;
 		contentPane.add(btnDeleteSelected, gbc_btnDeleteSelected);
+		
+	}
+
+	private void makeErrorLabel() { 
+		lblErrorMessage = new JLabel(" ");
+		lblErrorMessage.setName(ERROR_MESSAGE_LABEL);
+		GridBagConstraints gbc_lblErrorMessage = new GridBagConstraints();
+		gbc_lblErrorMessage.gridx = 1;
+		gbc_lblErrorMessage.gridy = 5;
+		contentPane.add(lblErrorMessage, gbc_lblErrorMessage);
+	}
+
+	private void makeIdLabel() {
+		JLabel lblId = new JLabel("id");
+		GridBagConstraints gbc_lblId = new GridBagConstraints();
+		gbc_lblId.anchor = GridBagConstraints.EAST;
+		gbc_lblId.insets = new Insets(0, 0, 5, 5);
+		gbc_lblId.gridx = 0;
+		gbc_lblId.gridy = 0;
+		contentPane.add(lblId, gbc_lblId);
 	}
 
 	private void makeIdTextBox(KeyAdapter btnAddEnabler) {
@@ -166,7 +146,7 @@ public class StudentSwingView extends JFrame implements StudentView {
 	}
 
 	private void makeNameLabel() {
-		lblName = new JLabel("name");
+		JLabel lblName = new JLabel("name");
 		GridBagConstraints gbc_lblName = new GridBagConstraints();
 		gbc_lblName.anchor = GridBagConstraints.EAST;
 		gbc_lblName.insets = new Insets(0, 0, 5, 5);
@@ -191,8 +171,11 @@ public class StudentSwingView extends JFrame implements StudentView {
 	private void makeAddButton() {
 		btnAdd = new JButton(ADD_BUTTON);
 		btnAdd.addActionListener(
-				arg0 -> new Thread(() -> schoolController.newStudent(new Student(txtId.getText(), txtName.getText())))
-						.start());
+				arg0 -> new Thread(() ->{
+					schoolController.newStudent(new Student(txtId.getText(), txtName.getText()));	
+					txtId.setText("");
+					txtName.setText("");
+				}).start());
 		btnAdd.setEnabled(false);
 		GridBagConstraints gbc_btnAdd = new GridBagConstraints();
 		gbc_btnAdd.gridwidth = 2;
@@ -201,9 +184,46 @@ public class StudentSwingView extends JFrame implements StudentView {
 		gbc_btnAdd.gridy = 2;
 		contentPane.add(btnAdd, gbc_btnAdd);
 	}
+	
+	private void makeStudentList() {
+		JScrollPane scrollPane = new JScrollPane();
+		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
+		gbc_scrollPane.fill = GridBagConstraints.BOTH;
+		gbc_scrollPane.gridwidth = 2;
+		gbc_scrollPane.insets = new Insets(0, 0, 5, 5);
+		gbc_scrollPane.gridx = 0;
+		gbc_scrollPane.gridy = 3;
+		contentPane.add(scrollPane, gbc_scrollPane);
 
-	DefaultListModel<Student> getListStudentModel() {
-		return listStudentModel;
+		listStudentModel = new DefaultListModel<>();
+		listStudents = new JList<>(listStudentModel);
+		listStudents
+				.addListSelectionListener(arg0 -> btnDeleteSelected.setEnabled(listStudents.getSelectedIndex() != -1));
+		scrollPane.setViewportView(listStudents);
+		listStudents.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		listStudents.setName(STUDENT_LIST);
+		listStudents.setCellRenderer(new DefaultListCellRenderer() {
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
+					boolean cellHasFocus) {
+				return super.getListCellRendererComponent(list, getDisplayString((Student)value), index, isSelected, cellHasFocus);
+			}
+			
+		});
+	}
+
+	public void setSchoolController(SchoolController schoolController) {
+		this.schoolController = schoolController;
+	}
+	
+	private String getDisplayString(Student student) {
+		return student.getId()+" - "+student.getName();
 	}
 
 	@Override
@@ -213,7 +233,13 @@ public class StudentSwingView extends JFrame implements StudentView {
 
 	@Override
 	public void showError(String message, Student student) {
-		SwingUtilities.invokeLater(() -> lblErrorMessage.setText(message + ": " + student));
+		SwingUtilities.invokeLater(() -> lblErrorMessage.setText(message + ": " + getDisplayString(student)));
+	}
+
+	@Override
+	public void showErrorStudentNotFound(String message, Student student) {
+		lblErrorMessage.setText(message+": "+getDisplayString(student));
+		listStudentModel.removeElement(student);
 	}
 
 	@Override
@@ -230,13 +256,5 @@ public class StudentSwingView extends JFrame implements StudentView {
 			listStudentModel.removeElement(student);
 			clearErrorLabel();
 		});
-	}
-
-	private void clearErrorLabel() {
-		lblErrorMessage.setText(" ");
-	}
-
-	public void setSchoolController(SchoolController schoolController) {
-		this.schoolController = schoolController;
 	}
 }

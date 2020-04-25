@@ -33,6 +33,8 @@ import de.bwaldvogel.mongo.backend.memory.MemoryBackend;
 @RunWith(GUITestRunner.class)
 public class StudentSwingViewIT extends AssertJSwingJUnitTestCase {
 
+	public static final String STUDENT_COLLECTION_NAME = "student";
+	public static final String SCHOOL_DB_NAME = "school";
 	private static final int TIMEOUT = 5000;
 	private static MongoServer server;
 	private static InetSocketAddress serverAddress;
@@ -56,7 +58,7 @@ public class StudentSwingViewIT extends AssertJSwingJUnitTestCase {
 	@Override
 	protected void onSetUp() {
 		client = new MongoClient(new ServerAddress(serverAddress));
-		studentRespository = new StudentMongoRepository(client);
+		studentRespository = new StudentMongoRepository(client,SCHOOL_DB_NAME,STUDENT_COLLECTION_NAME);
 		for (Student student : studentRespository.findAll()) {
 			studentRespository.delete(student.getId());
 		}
@@ -83,7 +85,7 @@ public class StudentSwingViewIT extends AssertJSwingJUnitTestCase {
 		studentRespository.save(student);
 		studentRespository.save(student2);
 		schoolController.allStudents();
-		assertThat(window.list().contents()).containsExactly(student.toString(), student2.toString());
+		assertThat(window.list().contents()).containsExactly("1 - Mario","2 - Carlo");
 	}
 
 	@Test
@@ -93,7 +95,7 @@ public class StudentSwingViewIT extends AssertJSwingJUnitTestCase {
 		window.textBox(NAME_TEXT).enterText("test1");
 		window.button(JButtonMatcher.withText(ADD_BUTTON)).click();
 		await().atMost(TIMEOUT, TimeUnit.MILLISECONDS).untilAsserted(
-				() -> assertThat(window.list().contents()).containsExactly(new Student("1", "test1").toString()));
+				() -> assertThat(window.list().contents()).containsExactly("1 - test1"));
 	}
 
 	@Test
@@ -111,7 +113,7 @@ public class StudentSwingViewIT extends AssertJSwingJUnitTestCase {
 		}, timeout(TIMEOUT));
 		assertThat(window.list().contents()).isEmpty();
 		window.label(ERROR_MESSAGE_LABEL)
-				.requireText("Already existing student with id 1: " + new Student("1", "test1"));
+				.requireText("Already existing student with id 1: 1 - test1");
 	}
 
 	@Test
@@ -139,6 +141,6 @@ public class StudentSwingViewIT extends AssertJSwingJUnitTestCase {
 		window.button(JButtonMatcher.withText(DELETE_BUTTON)).click();
 		assertThat(window.list().contents()).containsExactly(student.toString());
 		await().atMost(TIMEOUT, TimeUnit.MILLISECONDS).untilAsserted(
-				() -> window.label(ERROR_MESSAGE_LABEL).requireText("No existing student with id 1: " + student));
+				() -> window.label(ERROR_MESSAGE_LABEL).requireText("No existing student with id 1: 1 - test1"));
 	}
 }

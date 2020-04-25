@@ -110,7 +110,7 @@ public class StudentSwingViewTest extends AssertJSwingJUnitTestCase {
 		Student student2 = new Student("2", "test2");
 		studentSwingView.showAllStudents(Arrays.asList(student1, student2));
 		String[] listContents = window.list().contents(); // why here we don't need a name to find the list?
-		assertThat(listContents).containsExactly(student1.toString(), student2.toString());
+		assertThat(listContents).containsExactly("1 - test1","2 - test2");
 	}
 
 	@Test
@@ -118,7 +118,7 @@ public class StudentSwingViewTest extends AssertJSwingJUnitTestCase {
 	public void test_showError_should_show_the_message_in_the_error_label() {
 		Student student = new Student("1", "test");
 		studentSwingView.showError("error message", student);
-		window.label(ERROR_MESSAGE_LABEL).requireText("error message: " + student);
+		window.label(ERROR_MESSAGE_LABEL).requireText("error message: 1 - test");
 	}
 
 	@Test
@@ -126,7 +126,7 @@ public class StudentSwingViewTest extends AssertJSwingJUnitTestCase {
 	public void test_studentAdded_should_add_the_student_to_the_list_and_clear_the_error() {
 		studentSwingView.studentAdded(new Student("1", "test"));
 		String[] listContent = window.list().contents();
-		assertThat(listContent).containsExactly(new Student("1", "test").toString());
+		assertThat(listContent).containsExactly("1 - test");
 		window.label(ERROR_MESSAGE_LABEL).requireText(" ");
 	}
 
@@ -143,16 +143,20 @@ public class StudentSwingViewTest extends AssertJSwingJUnitTestCase {
 		studentSwingView.studentRemove(new Student("1", "test1"));
 		// verify
 		String[] listContent = window.list().contents();
-		assertThat(listContent).containsExactly(new Student("2", "test2").toString());
+		assertThat(listContent).containsExactly("2 - test2");
 		window.label(ERROR_MESSAGE_LABEL).requireText(" ");
 	}
 
 	@Test
-	public void test_AddButton_should_delegate_to_SchoolController_newStudent() {
-		window.textBox(ID_TEXT).enterText("1");
-		window.textBox(NAME_TEXT).enterText("test");
+	public void test_AddButton_should_delegate_to_SchoolController_newStudent_and_empty_text_boxes() {
+		JTextComponentFixture idText = window.textBox(ID_TEXT);
+		idText.enterText("1");
+		JTextComponentFixture nameText = window.textBox(NAME_TEXT);
+		nameText.enterText("test");
 		window.button(JButtonMatcher.withText(ADD_BUTTON)).click();
 		verify(schoolController, timeout(TIMEOUT)).newStudent(new Student("1", "test"));
+		idText.requireEmpty();
+		nameText.requireEmpty();
 	}
 
 	@Test
@@ -167,5 +171,19 @@ public class StudentSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.list(STUDENT_LIST).selectItem(1);
 		window.button(JButtonMatcher.withText(DELETE_BUTTON)).click();
 		verify(schoolController, timeout(TIMEOUT)).deleteStudent(student2);
+	}
+	
+	@Test @GUITest
+	public void test_showErrorStudentNotFound() {
+		Student student1 = new Student("1", "test 1");
+		Student student2 = new Student("2", "test 2");
+		GuiActionRunner.execute(() ->{
+			DefaultListModel<Student> listStudentModel = studentSwingView.getListStudentModel();
+			listStudentModel.add(0, student1);
+			listStudentModel.add(1, student2);
+		});
+		GuiActionRunner.execute(() -> studentSwingView.showErrorStudentNotFound("Error Message", student1));
+		window.label(ERROR_MESSAGE_LABEL).requireText("Error Message: 1 - test 1");
+		assertThat(window.list(STUDENT_LIST).contents()).containsExactly("2 - test 2");
 	}
 }
