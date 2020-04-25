@@ -2,6 +2,7 @@ package com.example.integration.school.view;
 
 import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
 import org.assertj.swing.timing.Timeout;
+import org.awaitility.Awaitility;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -9,6 +10,7 @@ import static org.mockito.Mockito.*;
 import static com.example.integration.school.view.StudentSwingView.*;
 
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.DefaultListModel;
 
@@ -155,8 +157,12 @@ public class StudentSwingViewTest extends AssertJSwingJUnitTestCase {
 		nameText.enterText("test");
 		window.button(JButtonMatcher.withText(ADD_BUTTON)).click();
 		verify(schoolController, timeout(TIMEOUT)).newStudent(new Student("1", "test"));
-		idText.requireEmpty();
-		nameText.requireEmpty();
+		Awaitility.await().atMost(TIMEOUT, TimeUnit.MILLISECONDS).untilAsserted(() -> {
+			assertThat(idText.text()).isEmpty();
+			assertThat(nameText.text()).isEmpty();
+		});
+//		idText.requireEmpty();
+//		nameText.requireEmpty();
 	}
 
 	@Test

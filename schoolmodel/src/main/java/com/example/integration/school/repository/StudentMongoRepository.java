@@ -13,6 +13,8 @@ import com.mongodb.client.model.Filters;
 
 public class StudentMongoRepository implements StudentRepository {
 
+	public static final String SCHOOL_DB_NAME = "test-db";
+	public static final String STUDENT_COLLECTION_NAME = "test-collection";
 	private MongoCollection<Document> collection;
 
 	public StudentMongoRepository(MongoClient client, String databaseName, String collectionName) {

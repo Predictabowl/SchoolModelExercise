@@ -48,7 +48,7 @@ public class SchoolControllerRaceConditionIT {
 		MongoCollection<Document> studenCollection = database
 				.getCollection(StudentMongoRepository.STUDENT_COLLECTION_NAME);
 		studenCollection.createIndex(Indexes.ascending("id"), new IndexOptions().unique(true));
-		studentRepository = new StudentMongoRepository(client);
+		studentRepository = new StudentMongoRepository(client,StudentMongoRepository.SCHOOL_DB_NAME,StudentMongoRepository.STUDENT_COLLECTION_NAME);
 	}
 
 	@Test
