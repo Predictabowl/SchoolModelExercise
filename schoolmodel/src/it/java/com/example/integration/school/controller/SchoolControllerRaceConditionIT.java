@@ -57,7 +57,7 @@ public class SchoolControllerRaceConditionIT {
 		ExecutorService executor = Executors.newFixedThreadPool(THREADS_NUM);
 		
 		
-		// imperative language is definitely more readable to me
+		// imperative language is definitely more readable in this case
 		List<Future<?>> futures = new ArrayList<>(THREADS_NUM);
 		for (int i = 0; i < THREADS_NUM; i++) {
 			futures.add(executor.submit(() -> new SchoolController(studentRepository, studentView).newStudent(student)));

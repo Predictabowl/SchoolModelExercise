@@ -4,18 +4,27 @@ import static com.example.integration.school.view.StudentSwingView.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.swing.launcher.ApplicationLauncher.application;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
+import java.util.stream.StreamSupport;
 
 import javax.swing.JFrame;
 
+import org.apache.logging.log4j.core.util.ArrayUtils;
+import org.assertj.swing.annotation.GUITest;
 import org.assertj.swing.core.BasicRobot;
 import org.assertj.swing.core.GenericTypeMatcher;
 import org.assertj.swing.core.matcher.JButtonMatcher;
 import org.assertj.swing.finder.WindowFinder;
 import org.assertj.swing.fixture.FrameFixture;
+import org.assertj.swing.timing.Condition;
+import org.assertj.swing.timing.Pause;
+import org.assertj.swing.timing.Timeout;
 import org.assertj.swing.util.Patterns;
+import org.awaitility.Awaitility;
 
 import io.cucumber.java.After;
 import io.cucumber.java.en.Given;
@@ -23,13 +32,13 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class StudentSwingViewSteps {
+	private static final int TIMEOUT = 5;
 	private static final String FIXTURE_NEW_NAME = "new student";
 	private static final String FIXTURE_NEW_ID = "10";
 	private static final String DB_NAME = "test-db";
 	private static final String COLLECTION_NAME = "test-collection";
 
 	private FrameFixture window;
-
 
 	@After
 	public void tearDown() {
@@ -50,16 +59,30 @@ public class StudentSwingViewSteps {
 		}).using(BasicRobot.robotWithCurrentAwtHierarchy());
 	}
 
+	// This test need to be fixed for racing conditions
 	@Then("The list contains the elements in the following table")
 	public void the_list_contains_the_elements_in_the_following_table(List<List<String>> dataTable) {
-		dataTable.forEach(
-				l -> assertThat(window.list().contents()).anySatisfy(r -> assertThat(r).contains(l.get(0), l.get(1))));
+		Pause.pause(new Condition("Waiting for list to populate") {
+
+			@Override
+			public boolean test() {
+				return dataTable.stream().allMatch(l -> {
+					return StreamSupport.stream(Arrays.spliterator(window.list().contents()), false).anyMatch(t -> {
+						return t.contains(l.get(0)) && t.contains(l.get(1));
+					});
+				});
+
+			}
+		}, Timeout.timeout(TIMEOUT, TimeUnit.SECONDS));
+
+//		dataTable.forEach(
+//				l -> assertThat(window.list().contents()).anySatisfy(r -> assertThat(r).contains(l.get(0), l.get(1))));
 	}
 
 	@When("The user enter the following values in the text fields")
 	public void the_user_enter_the_following_values_in_the_text_fields(List<Map<String, String>> dataTable) {
-		dataTable.forEach(c -> c.entrySet()
-				.forEach(a -> window.textBox(a.getKey() + "TextBox").enterText(a.getValue())));
+		dataTable.forEach(
+				c -> c.entrySet().forEach(a -> window.textBox(a.getKey() + "TextBox").enterText(a.getValue())));
 	}
 
 //	@When("The user enter the following values in the text fields")
@@ -72,17 +95,18 @@ public class StudentSwingViewSteps {
 	public void the_user_click_the_button(String button) {
 		window.button(JButtonMatcher.withText(button)).click();
 	}
-	
+
 	@Then("An error is shown containing the following values")
+	// This test need to be fixed for racing conditions
 	public void an_error_is_shown_containing_the_following_values(List<List<String>> dataTable) {
 		assertThat(window.label(ERROR_MESSAGE_LABEL).text()).contains(dataTable.get(0));
 	}
-	
+
 	@When("The user select the row {int} within the student list")
 	public void the_user_select_the_row_within_the_student_list(Integer index) {
-		window.list(STUDENT_LIST).selectItem(index-1);
+		window.list(STUDENT_LIST).selectItem(index - 1);
 	}
-	
+
 	@Given("The user enter student data in the text field")
 	public void the_user_enter_student_data_in_the_text_field() {
 		window.textBox(ID_TEXT).enterText(FIXTURE_NEW_ID);
@@ -90,37 +114,53 @@ public class StudentSwingViewSteps {
 	}
 
 	@Then("The list in the view contains the new student")
+	// This test need to be fixed for racing conditions
 	public void the_list_in_the_view_contains_the_new_student() {
-		assertThat(window.list().contents()).anySatisfy(c -> assertThat(c).contains(FIXTURE_NEW_ID,FIXTURE_NEW_NAME));
+		Awaitility.await().atMost(TIMEOUT, TimeUnit.SECONDS)
+				.until(() -> StreamSupport.stream(Arrays.spliterator(window.list().contents()), false).anyMatch(t -> {
+					return t.contains(FIXTURE_NEW_ID) && t.contains(FIXTURE_NEW_NAME);
+				}));
+//		assertThat(window.list().contents()).anySatisfy(c -> assertThat(c).contains(FIXTURE_NEW_ID, FIXTURE_NEW_NAME));
 	}
-	
+
 	@Given("The user enter student data in the text field, specifying an existing id")
 	public void the_user_enter_student_data_in_the_text_field_specifying_an_existing_id() {
 		window.textBox(ID_TEXT).enterText(DatabaseSteps.FIXTURE_1_ID);
 		window.textBox(NAME_TEXT).enterText(FIXTURE_NEW_NAME);
 	}
 
+	// This test need to be fixed for racing conditions
 	@Then("An error message will be shown containing the data of the existing student")
 	public void an_error_message_will_be_shown_containing_the_data_of_the_existing_student() {
-		assertThat(window.label(ERROR_MESSAGE_LABEL).text()).contains(DatabaseSteps.FIXTURE_1_ID,DatabaseSteps.FIXTURE_1_NAME);
-	}
-	
-	@Given("The user select a student within the view list")
-	public void the_user_select_a_student_within_the_view_list() {
-		window.list(STUDENT_LIST).selectItems(Pattern.compile(".*"+DatabaseSteps.FIXTURE_1_NAME+".*"));
+		Awaitility.await().atMost(TIMEOUT, TimeUnit.SECONDS).until(() -> window.label(ERROR_MESSAGE_LABEL).text()
+				.matches(".*" + DatabaseSteps.FIXTURE_1_ID + ".*" + DatabaseSteps.FIXTURE_1_NAME + ".*"));
+//		assertThat(window.label(ERROR_MESSAGE_LABEL).text()).contains(DatabaseSteps.FIXTURE_1_ID,
+//				DatabaseSteps.FIXTURE_1_NAME);
 	}
 
+	@Given("The user select a student within the view list")
+	public void the_user_select_a_student_within_the_view_list() {
+		window.list(STUDENT_LIST).selectItems(Pattern.compile(".*" + DatabaseSteps.FIXTURE_1_NAME + ".*"));
+	}
+
+	// This test need to be fixed for racing conditions
 	@Then("The student is removed from the list")
 	public void the_student_is_removed_from_the_list() {
-	    assertThat(window.list(STUDENT_LIST).contents()).noneMatch(p -> p.contains(DatabaseSteps.FIXTURE_1_NAME));
+		Pause.pause(new Condition("Wait for student removal") {
+
+			@Override
+			public boolean test() {
+				return StreamSupport.stream(Arrays.spliterator(window.list().contents()), false)
+						.noneMatch(t -> t.contains(DatabaseSteps.FIXTURE_1_NAME));
+			}
+		}, Timeout.timeout(TIMEOUT, TimeUnit.SECONDS));
+//		assertThat(window.list(STUDENT_LIST).contents()).noneMatch(p -> p.contains(DatabaseSteps.FIXTURE_1_NAME));
 	}
 
 	@Then("An error message will be shown containing the data of the selected student")
 	public void an_error_message_will_be_shown_containing_the_data_of_the_selected_student() {
-	    assertThat(window.label(ERROR_MESSAGE_LABEL).text()).contains(DatabaseSteps.FIXTURE_1_ID,DatabaseSteps.FIXTURE_1_NAME);
+		assertThat(window.label(ERROR_MESSAGE_LABEL).text()).contains(DatabaseSteps.FIXTURE_1_ID,
+				DatabaseSteps.FIXTURE_1_NAME);
 	}
 
-
-
-	
 }

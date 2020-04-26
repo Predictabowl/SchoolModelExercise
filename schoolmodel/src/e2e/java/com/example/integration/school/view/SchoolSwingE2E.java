@@ -41,8 +41,8 @@ public class SchoolSwingE2E extends AssertJSwingJUnitTestCase {
 	protected void onSetUp() {
 		mongoClient = new MongoClient(MONGO_HOST, MONGO_PORT);
 		mongoClient.getDatabase(DB_NAME).drop();
-		addTestSttudentToDatabase(FIXTURE_1_ID, FIXTURE_1_NAME);
-		addTestSttudentToDatabase(FIXTURE_2_ID, FIXTURE_2_NAME);
+		addTestStudentToDatabase(FIXTURE_1_ID, FIXTURE_1_NAME);
+		addTestStudentToDatabase(FIXTURE_2_ID, FIXTURE_2_NAME);
 		application("com.example.integration.school.app.swing.SchoolSwingApp").withArgs("--mongo-host=" + MONGO_HOST,
 				"--mongo-port=" + MONGO_PORT, "--db-name=" + DB_NAME, "--db-collection=" + COLLECTION_NAME).start();
 		window = WindowFinder.findFrame(new GenericTypeMatcher<JFrame>(JFrame.class) {
@@ -54,7 +54,7 @@ public class SchoolSwingE2E extends AssertJSwingJUnitTestCase {
 		}).using(robot());
 	}
 
-	private void addTestSttudentToDatabase(String id, String name) {
+	private void addTestStudentToDatabase(String id, String name) {
 		mongoClient.getDatabase(DB_NAME).getCollection(COLLECTION_NAME)
 				.insertOne(new Document().append("id", id).append("name", name));
 	}
