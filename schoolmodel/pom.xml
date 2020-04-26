@@ -62,7 +62,7 @@
 			${project.build.directory}/surefire-reports,
 			${project.build.directory}/failsafe-reports,
 		</sonar.jnuit.repotPaths>
-		<sonar.host.url>http://192.168.1.250:9000</sonar.host.url>
+		<sonar.host.url>http://localhost:9000</sonar.host.url>
 	</properties>
 
 	<dependencies>
