@@ -1,13 +1,15 @@
 package com.example.integration.school.view;
 
-import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
-import org.assertj.swing.timing.Timeout;
-import org.awaitility.Awaitility;
-
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
-import static com.example.integration.school.view.StudentSwingView.*;
+import static com.example.integration.school.view.StudentSwingView.ADD_BUTTON;
+import static com.example.integration.school.view.StudentSwingView.DELETE_BUTTON;
+import static com.example.integration.school.view.StudentSwingView.ERROR_MESSAGE_LABEL;
+import static com.example.integration.school.view.StudentSwingView.ID_TEXT;
+import static com.example.integration.school.view.StudentSwingView.NAME_TEXT;
+import static com.example.integration.school.view.StudentSwingView.STUDENT_LIST;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.timeout;
+import static org.mockito.Mockito.verify;
 
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
@@ -22,9 +24,10 @@ import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.fixture.JButtonFixture;
 import org.assertj.swing.fixture.JTextComponentFixture;
 import org.assertj.swing.junit.runner.GUITestRunner;
+import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
+import org.awaitility.Awaitility;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 
 import com.example.integration.school.controller.SchoolController;
 import com.example.integration.school.model.Student;

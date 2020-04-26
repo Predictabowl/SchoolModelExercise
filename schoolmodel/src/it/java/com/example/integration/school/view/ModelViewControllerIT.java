@@ -1,8 +1,11 @@
 package com.example.integration.school.view;
 
-import static com.example.integration.school.view.StudentSwingView.*;
-import static org.assertj.core.api.Assertions.*;
-import static org.awaitility.Awaitility.*;
+import static com.example.integration.school.view.StudentSwingView.ADD_BUTTON;
+import static com.example.integration.school.view.StudentSwingView.DELETE_BUTTON;
+import static com.example.integration.school.view.StudentSwingView.ID_TEXT;
+import static com.example.integration.school.view.StudentSwingView.NAME_TEXT;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 
 import java.util.concurrent.TimeUnit;
 
@@ -19,7 +22,6 @@ import org.testcontainers.containers.GenericContainer;
 import com.example.integration.school.controller.SchoolController;
 import com.example.integration.school.model.Student;
 import com.example.integration.school.repository.StudentMongoRepository;
-import com.example.integration.school.view.StudentSwingView;
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
 
