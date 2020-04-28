@@ -5,8 +5,12 @@ import org.apache.logging.log4j.*;
 import java.util.concurrent.Callable;
 
 import com.example.integration.school.controller.SchoolController;
+import com.example.integration.school.guice.SchoolSwingMongoDefaultModule;
 import com.example.integration.school.repository.StudentMongoRepository;
 import com.example.integration.school.view.StudentSwingView;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.Module;
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
 
@@ -42,14 +46,21 @@ public class SchoolSwingApp implements Callable<Void> {
 	public Void call() throws Exception {
 		EventQueue.invokeLater(() -> {
 			try {
-				StudentMongoRepository studentRepository = new StudentMongoRepository(
-						new MongoClient(new ServerAddress(mongoHost, mongoPort)), databaseName, collectionName);
-				StudentSwingView studentView = new StudentSwingView();
-				SchoolController schoolController = new SchoolController(studentRepository, studentView);
-				studentView.setSchoolController(schoolController);
+				Module module = new SchoolSwingMongoDefaultModule()
+						.mongoHost(mongoHost)
+						.mongoPort(mongoPort)
+						.databaseName(databaseName)
+						.collectionName(collectionName);
+				Guice.createInjector(module).getInstance(StudentSwingView.class).start();
 
-				studentView.setVisible(true);
-				schoolController.allStudents();
+//				StudentMongoRepository studentRepository = new StudentMongoRepository(
+//						new MongoClient(new ServerAddress(mongoHost, mongoPort)), databaseName, collectionName);
+//				StudentSwingView studentView = new StudentSwingView();
+//				SchoolController schoolController = new SchoolController(studentRepository, studentView);
+//				studentView.setSchoolController(schoolController);
+//
+//				studentView.setVisible(true);
+//				schoolController.allStudents();
 			} catch (Exception e) {
 				logger.fatal("Exception (test)", e);
 			}

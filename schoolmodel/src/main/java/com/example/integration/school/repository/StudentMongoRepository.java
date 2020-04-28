@@ -1,11 +1,14 @@
 package com.example.integration.school.repository;
 
 import java.util.List;
+import com.google.inject.Inject;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import org.bson.*;
 
+import com.example.integration.school.guice.MongoCollectionName;
+import com.example.integration.school.guice.MongoDbName;
 import com.example.integration.school.model.Student;
 import com.mongodb.*;
 import com.mongodb.client.MongoCollection;
@@ -15,7 +18,8 @@ public class StudentMongoRepository implements StudentRepository {
 
 	private MongoCollection<Document> collection;
 
-	public StudentMongoRepository(MongoClient client, String databaseName, String collectionName) {
+	@Inject
+	public StudentMongoRepository(MongoClient client,@MongoDbName String databaseName,@MongoCollectionName String collectionName) {
 		collection = client.getDatabase(databaseName).getCollection(collectionName);
 	}
 

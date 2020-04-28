@@ -211,6 +211,10 @@ public class StudentSwingView extends JFrame implements StudentView {
 			
 		});
 	}
+	
+	public SchoolController getSchoolController() {
+		return schoolController;
+	}
 
 	public void setSchoolController(SchoolController schoolController) {
 		this.schoolController = schoolController;
@@ -218,6 +222,11 @@ public class StudentSwingView extends JFrame implements StudentView {
 	
 	private String getDisplayString(Student student) {
 		return student.getId()+" - "+student.getName();
+	}
+	
+	public void start() {
+		this.setVisible(true);
+		schoolController.allStudents();
 	}
 
 	@Override
